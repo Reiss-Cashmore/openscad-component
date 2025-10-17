@@ -62,12 +62,15 @@ export function App({initialState, statePersister, fs}: {initialState: State, st
       const itemCount = (layout.editor ? 1 : 0) + (layout.viewer ? 1 : 0) + (layout.customizer ? 1 : 0)
       return {
         flex: 1,
+        minHeight: 0,
+        minWidth: 0,
         maxWidth: Math.floor(100/itemCount) + '%',
         display: (state.view.layout as any)[id] ? 'flex' : 'none'
       }
     } else {
       return {
         flex: 1,
+        minHeight: 0,
         zIndex: Number((zIndexOfPanelsDependingOnFocus as any)[id][layout.focus]),
       }
     }
@@ -78,14 +81,23 @@ export function App({initialState, statePersister, fs}: {initialState: State, st
       <FSContext.Provider value={fs}>
         <div className='flex flex-column' style={{
             flex: 1,
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
           }}>
           
-          <PanelSwitcher />
+          <div style={{ flexShrink: 0 }}>
+            <PanelSwitcher />
+          </div>
     
           <div className={mode === 'multi' ? 'flex flex-row' : 'flex flex-column'}
-              style={mode === 'multi' ? {flex: 1} : {
+              style={mode === 'multi' ? {
                 flex: 1,
-                position: 'relative'
+                minHeight: 0,
+              } : {
+                flex: 1,
+                position: 'relative',
+                minHeight: 0,
               }}>
 
             <EditorPanel className={`
@@ -101,7 +113,9 @@ export function App({initialState, statePersister, fs}: {initialState: State, st
             `} style={getPanelStyle('customizer')} />
           </div>
 
-          <Footer />
+          <div style={{ flexShrink: 0 }}>
+            <Footer />
+          </div>
           <ConfirmDialog />
         </div>
       </FSContext.Provider>

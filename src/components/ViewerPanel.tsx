@@ -175,7 +175,8 @@ export default function ViewerPanel({className, style}: {className?: string, sty
               display: 'flex',
               flexDirection: 'column', 
               position: 'relative',
-              flex: 1, 
+              flex: 1,
+              minHeight: 0,
               width: '100%',
               ...(style ?? {})
           }}>

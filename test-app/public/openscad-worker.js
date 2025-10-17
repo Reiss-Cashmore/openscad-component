@@ -1,77 +1,79 @@
-import { c as m, s as F, e as g, f as E } from "./filesystem-CLkvj-ck.js";
+import { c as m, s as g, e as F, f as E } from "./filesystem-C1g2j6Bt.js";
 importScripts("browserfs.min.js");
-function i(a) {
-  self.postMessage(a);
+function c(i) {
+  self.postMessage(i);
 }
-self.addEventListener("message", async (a) => {
+self.addEventListener("message", async (i) => {
+  console.log("OpenSCAD worker received message:", i.data);
   const {
-    mountArchives: f,
+    mountArchives: h,
     inputs: l,
     args: p,
-    outputPaths: h
-  } = a.data, r = [];
-  let t;
+    outputPaths: f
+  } = i.data, n = [];
+  let o;
   const d = performance.now();
   try {
-    if (t = await OpenSCAD({
+    if (console.log("Initializing OpenSCAD..."), o = await OpenSCAD({
       noInitialRun: !0,
       print: (e) => {
-        console.debug("stdout: " + e), i({ stdout: e }), r.push({ stdout: e });
+        console.debug("stdout: " + e), c({ stdout: e }), n.push({ stdout: e });
       },
       printErr: (e) => {
-        console.debug("stderr: " + e), i({ stderr: e }), r.push({ stderr: e });
+        console.debug("stderr: " + e), c({ stderr: e }), n.push({ stderr: e });
       }
-    }), f) {
-      await m({ prefix: "", allowPersistence: !1 }), t.FS.mkdir("/libraries");
+    }), console.log("OpenSCAD instance created."), h) {
+      console.log("Mounting archives..."), await m({ prefix: "", allowPersistence: !1 }), o.FS.mkdir("/libraries");
       const e = new BrowserFS.EmscriptenFS(
-        t.FS,
-        t.PATH ?? {
-          join2: (o, S) => `${o}/${S}`,
-          join: (...o) => o.join("/")
+        o.FS,
+        o.PATH ?? {
+          join2: (r, w) => `${r}/${w}`,
+          join: (...r) => r.join("/")
         },
-        t.ERRNO_CODES ?? {}
+        o.ERRNO_CODES ?? {}
       );
-      t.FS.mount(e, { root: "/" }, "/libraries"), await F(g, t.FS, "/libraries", "/");
+      o.FS.mount(e, { root: "/" }, "/libraries"), await g(F, o.FS, "/libraries", "/"), console.log("Archives mounted.");
     }
-    if (t.FS.chdir("/"), t.FS.mkdir("/locale"), l)
+    if (o.FS.chdir("/"), o.FS.mkdir("/locale"), l)
       for (const e of l)
         try {
-          console.log(`Writing ${e.path}`), e.content == null && e.path != null && e.url == null ? t.FS.isFile(e.path) || console.error(`File ${e.path} does not exist!`) : t.FS.writeFile(e.path, await E(t.FS, e));
-        } catch (o) {
-          throw console.trace(o), new Error(`Error while trying to write ${e.path}: ${o}`);
+          console.log(`Writing ${e.path}`), e.content == null && e.path != null && e.url == null ? o.FS.isFile(e.path) || console.error(`File ${e.path} does not exist!`) : o.FS.writeFile(e.path, await E(o.FS, e));
+        } catch (r) {
+          throw console.trace(r), new Error(`Error while trying to write ${e.path}: ${r}`);
         }
     console.log("Invoking OpenSCAD with: ", p);
-    let s;
+    let t;
     try {
-      s = t.callMain(p);
+      t = o.callMain(p);
     } catch (e) {
-      throw typeof e == "number" && t.formatException && (e = t.formatException(e)), new Error(`OpenSCAD invocation failed: ${e}`);
+      throw typeof e == "number" && o.formatException && (e = o.formatException(e)), new Error(`OpenSCAD invocation failed: ${e}`);
     }
-    const c = performance.now() - d, n = [];
-    for (const e of h ?? [])
+    const a = performance.now() - d, s = [];
+    for (const e of f ?? [])
       try {
-        const o = t.FS.readFile(e);
-        n.push([e, o]);
-      } catch (o) {
-        throw console.trace(o), new Error(`Failed to read output file ${e}: ${o}`);
+        const r = o.FS.readFile(e);
+        s.push([e, r]);
+      } catch (r) {
+        throw console.trace(r), new Error(`Failed to read output file ${e}: ${r}`);
       }
     const u = {
-      outputs: n,
-      mergedOutputs: r,
-      exitCode: s,
-      elapsedMillis: c
+      outputs: s,
+      mergedOutputs: n,
+      exitCode: t,
+      elapsedMillis: a
     };
-    console.debug(u), i({ result: u });
-  } catch (s) {
-    const c = performance.now() - d;
-    console.trace(s);
-    const n = `${s}`;
-    r.push({ error: n }), i({
+    console.debug(u), c({ result: u });
+  } catch (t) {
+    console.error("Error in OpenSCAD worker:", t);
+    const a = performance.now() - d;
+    console.trace(t);
+    const s = `${t}`;
+    n.push({ error: s }), c({
       result: {
         exitCode: void 0,
-        error: n,
-        mergedOutputs: r,
-        elapsedMillis: c
+        error: s,
+        mergedOutputs: n,
+        elapsedMillis: a
       }
     });
   }

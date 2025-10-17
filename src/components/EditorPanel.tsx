@@ -74,11 +74,9 @@ export default function EditorPanel({className, style}: {className?: string, sty
 
   return (
     <div className={`editor-panel ${className ?? ''}`} style={{
-      // maxWidth: '5 0vw',
       display: 'flex',
       flexDirection: 'column',
-      // position: 'relative',
-      // width: '100%', height: '100%',
+      minHeight: 0,
       ...(style ?? {})
     }}>
       <div className='flex flex-row gap-2' style={{
@@ -161,36 +159,49 @@ export default function EditorPanel({className, style}: {className?: string, sty
       
       <div style={{
         position: 'relative',
-        flex: 1
+        flex: 1,
+        minHeight: 0,
+        overflow: 'hidden'
       }}>
-        {isMonacoSupported && (
-          <Editor
-            className="openscad-editor absolute-fill"
-            defaultLanguage="openscad"
-            path={state.params.activePath}
-            value={model.source}
-            onChange={s => model.source = s ?? ''}
-            onMount={onMount} // TODO: This looks a bit silly, does it trigger a re-render??
-            options={{
-              ...openscadEditorOptions,
-              fontSize: 16,
-              lineNumbers: state.view.lineNumbers ? 'on' : 'off',
-            }}
-          />
-        )}
-        {!isMonacoSupported && (
-          <InputTextarea 
-            className="openscad-editor absolute-fill"
-            value={model.source}
-            onChange={s => model.source = s.target.value ?? ''}  
-          />
-        )}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%'
+        }}>
+          {isMonacoSupported && (
+            <Editor
+              className="openscad-editor"
+              defaultLanguage="openscad"
+              path={state.params.activePath}
+              value={model.source}
+              onChange={s => model.source = s ?? ''}
+              onMount={onMount} // TODO: This looks a bit silly, does it trigger a re-render??
+              options={{
+                ...openscadEditorOptions,
+                fontSize: 16,
+                lineNumbers: state.view.lineNumbers ? 'on' : 'off',
+              }}
+            />
+          )}
+          {!isMonacoSupported && (
+            <InputTextarea 
+              className="openscad-editor absolute-fill"
+              value={model.source}
+              onChange={s => model.source = s.target.value ?? ''}  
+            />
+          )}
+        </div>
       </div>
 
       <div style={{
         display: state.view.logs ? undefined : 'none',
         overflowY: 'scroll',
-        height: 'calc(min(200px, 30vh))',
+        height: 'min(200px, 30vh)',
+        flexShrink: 0,
       }}>
         {(state.currentRunLogs ?? []).map(([type, text], i) => (
           <pre key={i}>{text}</pre>

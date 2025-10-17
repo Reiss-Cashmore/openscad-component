@@ -1,0 +1,7 @@
+numpy
+scipy
+trimesh
+open3d
+networkx
+lxml
+pyinstaller

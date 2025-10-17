@@ -132,7 +132,18 @@ export function OpenSCADPlayground(props: OpenSCADPlaygroundProps) {
 
   // Render the app
   return (
-    <div className={props.className} style={props.style}>
+    <div
+      className={props.className}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+        ...props.style
+      }}
+    >
       <App
         initialState={initialState}
         statePersister={statePersister!}

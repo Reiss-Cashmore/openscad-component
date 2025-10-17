@@ -48,10 +48,9 @@ export default function CustomizerPanel({className, style}: {className?: string,
         style={{
           display: 'flex',
           flexDirection: 'column',
-          maxHeight: '80vh',
-          overflow: 'scroll',
+          minHeight: 0,
+          overflow: 'auto',
           ...style,
-          bottom: 'unset',
         }}>
       {groups.map(([group, params]) => (
         <Fieldset 

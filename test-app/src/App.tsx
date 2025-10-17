@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import { OpenSCADPlayground } from 'openscad-playground';
-import 'openscad-playground/styles';
 
 function App() {
   const [lastEvent, setLastEvent] = useState<string>('None');
   const [statePreview, setStatePreview] = useState<string>('');
 
   return (
-    <>
-      <header>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <header style={{ flexShrink: 0 }}>
         <h1>OpenSCAD Playground Test App</h1>
         <p>Testing the built NPM component - Port 3001</p>
       </header>
 
-      <div className="playground-container">
+      <div className="playground-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <OpenSCADPlayground
           wasmUrl="/wasm/openscad.wasm"
           workerUrl="/openscad-worker.js"
@@ -65,11 +64,11 @@ translate([10, 0, 15])
         />
       </div>
 
-      <footer>
+      <footer style={{ flexShrink: 0 }}>
         <h4>Last Event: {lastEvent}</h4>
         {statePreview && <pre>{statePreview}</pre>}
       </footer>
-    </>
+    </div>
   );
 }
 

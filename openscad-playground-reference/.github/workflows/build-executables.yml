@@ -1,0 +1,89 @@
+name: Build Executables
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: 3d2scad-linux-x64
+            asset_name: 3d2scad-linux-x64
+            arch: x64
+          - os: macos-13
+            artifact_name: 3d2scad-macos-x64
+            asset_name: 3d2scad-macos-x64
+            arch: x64
+          - os: macos-latest
+            artifact_name: 3d2scad-macos-arm64
+            asset_name: 3d2scad-macos-arm64
+            arch: arm64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r build/requirements.txt
+
+    - name: Build executable with PyInstaller
+      run: |
+        cd build
+        pyinstaller 3d2scad.spec
+
+    - name: Fix macOS quarantine attributes
+      if: startsWith(matrix.os, 'macos')
+      run: |
+        cd build/dist
+        # Remove quarantine attributes from the executable
+        xattr -cr 3d2scad
+        # Make executable runnable
+        chmod +x 3d2scad
+
+    - name: Rename executable
+      run: |
+        cd build/dist
+        mv 3d2scad ${{ matrix.asset_name }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: build/dist/${{ matrix.asset_name }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          artifacts/3d2scad-linux-x64/3d2scad-linux-x64
+          artifacts/3d2scad-macos-x64/3d2scad-macos-x64
+          artifacts/3d2scad-macos-arm64/3d2scad-macos-arm64
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

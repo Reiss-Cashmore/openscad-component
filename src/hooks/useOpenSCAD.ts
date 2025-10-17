@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Model } from '../state/model';
 import { State, StatePersister } from '../state/app-state';
 import { createEditorFS } from '../fs/filesystem';
+import { registerOpenSCADLanguage } from '../language/openscad-register-language';
+import { zipArchives } from '../fs/zip-archives';
 
 export interface UseOpenSCADConfig {
   initialState: State;
@@ -29,6 +31,11 @@ export function useOpenSCAD(config: UseOpenSCADConfig): UseOpenSCADReturn {
       try {
         // Create filesystem
         const filesystem = await createEditorFS({ prefix: '/tmp', allowPersistence: false }); // TODO: Support standalone mode
+
+        if (!mounted) return;
+
+        // Register OpenSCAD language for Monaco editor
+        await registerOpenSCADLanguage(filesystem, '/', zipArchives);
 
         if (!mounted) return;
 
