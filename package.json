@@ -1,0 +1,80 @@
+{
+  "name": "openscad-playground",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "OpenSCAD in the browser - React component for 3D CAD modeling",
+  "keywords": ["openscad", "cad", "3d", "modeling", "wasm", "react", "component"],
+  "author": "",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./worker": {
+      "types": "./dist/openscad-worker.d.ts",
+      "import": "./dist/openscad-worker.js"
+    },
+    "./styles": "./dist/openscad-playground.css"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/post-build.js",
+    "build:watch": "vite build --watch",
+    "build:libs": "tsx scripts/build-libs.ts",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "@gltf-transform/core": "^4.1.1",
+    "@gltf-transform/extensions": "^4.1.1",
+    "@monaco-editor/loader": "^1.4.0",
+    "@monaco-editor/react": "^4.6.0",
+    "blurhash": "^2.0.5",
+    "chroma-js": "^3.1.2",
+    "debug": "^4.4.0",
+    "jszip": "^3.10.1",
+    "monaco-editor": "^0.52.2",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.8.5",
+    "thumbhash": "^0.1.1",
+    "uuid": "^11.0.3",
+    "uzip": "^0.20201231.0"
+  },
+  "devDependencies": {
+    "@types/chroma-js": "^2.4.5",
+    "@types/debug": "^4.1.12",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/uzip": "^0.20201231.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/ui": "^2.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.3.0",
+    "vitest": "^2.0.0",
+    "tsx": "^4.19.2"
+  }
+}
