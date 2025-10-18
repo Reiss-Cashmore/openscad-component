@@ -2,7 +2,7 @@
 
 OpenSCAD in the browser - A React component for 3D CAD modeling with WebAssembly.
 
-## 🚀 Features
+## Features
 
 - **Full OpenSCAD in the browser** - No installation required
 - **Monaco Editor** - VSCode-like editing experience with syntax highlighting
@@ -12,13 +12,13 @@ OpenSCAD in the browser - A React component for 3D CAD modeling with WebAssembly
 - **Customizer** - Interactive parameter controls
 - **React Component** - Easy integration into your React apps
 
-## 📦 Installation
+## Installation
 
 ```bash
-npm install openscad-playground react react-dom
+npm install openscad-playground
 ```
 
-## 🎯 Quick Start
+## Quick Start
 
 ```tsx
 import { OpenSCADPlayground } from 'openscad-playground';
@@ -36,7 +36,7 @@ function App() {
 }
 ```
 
-## 📚 Documentation
+## Documentation
 
 ### Basic Usage
 
@@ -101,7 +101,7 @@ You need to host these files publicly (available in the `public/` folder):
    - `public/axes.glb` - 3D axes model
    - `public/skybox-lights.jpg` - Environment lighting
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 
@@ -125,12 +125,6 @@ npm run build
 
 # Build with watch mode
 npm run build:watch
-
-# Type checking
-npm run type-check
-
-# Run tests
-npm run test
 ```
 
 ### Testing the Built Package
@@ -144,7 +138,7 @@ cd test-app
 npm run dev  # Opens on port 3001
 ```
 
-## 🔧 Advanced Usage
+## Advanced Usage
 
 ### Custom State Management
 
@@ -191,27 +185,9 @@ function MyComponent() {
 }
 ```
 
-## 📄 License
 
-GPL-2.0-or-later
-
-Portions of this project are Copyright 2021 Google LLC, and licensed under GPL2+.
-
-## 🙏 Credits
+## Credits
 
 - Original OpenSCAD Playground by [Olivier Chafik](https://github.com/ochafik)
 - OpenSCAD project: [openscad.org](https://openscad.org)
 - BOSL2 and other bundled libraries by their respective authors
-
-## 🐛 Issues & Contributions
-
-Please report issues on GitHub (link TBD).
-
-## 📝 Changelog
-
-### 2.0.0
-
-- Rebuilt with Vite for modern tooling
-- Published as NPM component
-- Improved TypeScript support
-- Better developer experience
