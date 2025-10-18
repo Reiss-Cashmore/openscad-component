@@ -10,6 +10,7 @@
     "install-component": "cd .. && npm run build && cd test-app && npm install"
   },
   "dependencies": {
+    "np": "^10.2.0",
     "openscad-playground": "file:../dist",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
