@@ -76,11 +76,19 @@ export default function EditorPanel({className, style}: {className?: string, sty
     <div className={`editor-panel ${className ?? ''}`} style={{
       display: 'flex',
       flexDirection: 'column',
-      minHeight: 0,
+      height: '100%',
+      width: '100%',
+      backgroundColor: 'var(--surface-ground)',
       ...(style ?? {})
     }}>
-      <div className='flex flex-row gap-2' style={{
-        margin: '5px',
+      <div className='editor-toolbar' style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '8px',
+        padding: '8px',
+        backgroundColor: 'var(--surface-card)',
+        borderBottom: '1px solid var(--surface-border)',
+        flexShrink: 0
       }}>
           
         <Menu model={[
@@ -141,7 +149,15 @@ export default function EditorPanel({className, style}: {className?: string, sty
             command: () => editor?.trigger(state.params.activePath, 'actions.find', null),
           },
         ] as MenuItem[]} popup ref={menu} />
-        <Button title="Editor menu" rounded text icon="pi pi-ellipsis-h" onClick={(e) => menu.current && menu.current.toggle(e)} />
+        <Button 
+          title="Editor menu" 
+          rounded 
+          text 
+          icon="pi pi-ellipsis-h" 
+          onClick={(e) => menu.current && menu.current.toggle(e)}
+          className="p-button-sm"
+          aria-label="Editor menu"
+        />
         
         <FilePicker 
             style={{
@@ -149,59 +165,58 @@ export default function EditorPanel({className, style}: {className?: string, sty
             }}/>
 
         {state.params.activePath !== defaultSourcePath && 
-          <Button icon="pi pi-chevron-left" 
-          text
-          onClick={() => model.openFile(defaultSourcePath)} 
-          title={`Go back to ${defaultSourcePath}`}/>}
+          <Button 
+            icon="pi pi-chevron-left" 
+            text
+            onClick={() => model.openFile(defaultSourcePath)} 
+            title={`Go back to ${defaultSourcePath}`}
+            className="p-button-sm"
+            aria-label={`Go back to ${defaultSourcePath}`}
+          />}
 
       </div>
 
       
-      <div style={{
+      <div className="editor-content" style={{
         position: 'relative',
         flex: 1,
-        minHeight: 0,
+        minHeight: 0, // Important for proper flex shrinking
         overflow: 'hidden'
       }}>
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: '100%',
-          height: '100%'
-        }}>
-          {isMonacoSupported && (
-            <Editor
-              className="openscad-editor"
-              defaultLanguage="openscad"
-              path={state.params.activePath}
-              value={model.source}
-              onChange={s => model.source = s ?? ''}
-              onMount={onMount} // TODO: This looks a bit silly, does it trigger a re-render??
-              options={{
-                ...openscadEditorOptions,
-                fontSize: 16,
-                lineNumbers: state.view.lineNumbers ? 'on' : 'off',
-              }}
-            />
-          )}
-          {!isMonacoSupported && (
-            <InputTextarea 
-              className="openscad-editor absolute-fill"
-              value={model.source}
-              onChange={s => model.source = s.target.value ?? ''}  
-            />
-          )}
-        </div>
+        {isMonacoSupported && (
+          <Editor
+            className="openscad-editor absolute-fill"
+            defaultLanguage="openscad"
+            path={state.params.activePath}
+            value={model.source}
+            onChange={s => model.source = s ?? ''}
+            onMount={onMount} // TODO: This looks a bit silly, does it trigger a re-render??
+            options={{
+              ...openscadEditorOptions,
+              fontSize: 16,
+              lineNumbers: state.view.lineNumbers ? 'on' : 'off',
+            }}
+          />
+        )}
+        {!isMonacoSupported && (
+          <InputTextarea 
+            className="openscad-editor absolute-fill"
+            value={model.source}
+            onChange={s => model.source = s.target.value ?? ''}  
+          />
+        )}
       </div>
 
-      <div style={{
-        display: state.view.logs ? undefined : 'none',
-        overflowY: 'scroll',
-        height: 'min(200px, 30vh)',
+      <div className="editor-logs" style={{
+        display: state.view.logs ? 'block' : 'none',
+        overflowY: 'auto',
+        maxHeight: '200px',
+        backgroundColor: 'var(--surface-card)',
+        borderTop: '1px solid var(--surface-border)',
         flexShrink: 0,
+        padding: '8px',
+        fontSize: '12px',
+        fontFamily: 'monospace'
       }}>
         {(state.currentRunLogs ?? []).map(([type, text], i) => (
           <pre key={i}>{text}</pre>

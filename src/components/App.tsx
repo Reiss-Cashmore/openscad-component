@@ -37,85 +37,80 @@ export function App({initialState, statePersister, fs}: {initialState: State, st
     };
   }, []);
 
-  const zIndexOfPanelsDependingOnFocus = {
-    editor: {
-      editor: 3,
-      viewer: 1,
-      customizer: 0,
-    },
-    viewer: {
-      editor: 2,
-      viewer: 3,
-      customizer: 1,
-    },
-    customizer: {
-      editor: 0,
-      viewer: 1,
-      customizer: 3,
-    }
-  }
-
-  const layout = state.view.layout
-  const mode = state.view.layout.mode;
-  function getPanelStyle(id: MultiLayoutComponentId): CSSProperties {
-    if (layout.mode === 'multi') {
-      const itemCount = (layout.editor ? 1 : 0) + (layout.viewer ? 1 : 0) + (layout.customizer ? 1 : 0)
-      return {
-        flex: 1,
-        minHeight: 0,
-        minWidth: 0,
-        maxWidth: Math.floor(100/itemCount) + '%',
-        display: (state.view.layout as any)[id] ? 'flex' : 'none'
-      }
-    } else {
-      return {
-        flex: 1,
-        minHeight: 0,
-        zIndex: Number((zIndexOfPanelsDependingOnFocus as any)[id][layout.focus]),
-      }
-    }
-  }
+  const layout = state.view.layout;
+  const isMultiLayout = layout.mode === 'multi';
+  const isCustomizerOpen = isMultiLayout ? layout.customizer : false;
+  
+  // Calculate panel widths based on layout
+  const getPanelFlex = (panelId: MultiLayoutComponentId): number => {
+    if (!isMultiLayout) return 1;
+    
+    const visiblePanels = [
+      layout.editor ? 'editor' : null,
+      layout.viewer ? 'viewer' : null, 
+      layout.customizer ? 'customizer' : null
+    ].filter(Boolean).length;
+    
+    return visiblePanels > 0 ? 1 : 0;
+  };
+  
+  const getPanelDisplay = (panelId: MultiLayoutComponentId): string => {
+    if (!isMultiLayout) return 'flex';
+    return (state.view.layout as any)[panelId] ? 'flex' : 'none';
+  };
 
   return (
     <ModelContext.Provider value={model}>
       <FSContext.Provider value={fs}>
-        <div className='flex flex-column' style={{
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            overflow: 'hidden',
-          }}>
+        <div className="app-container" style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          width: '100vw',
+          overflow: 'hidden'
+        }}>
           
-          <div style={{ flexShrink: 0 }}>
-            <PanelSwitcher />
-          </div>
+          <PanelSwitcher />
     
-          <div className={mode === 'multi' ? 'flex flex-row' : 'flex flex-column'}
-              style={mode === 'multi' ? {
-                flex: 1,
-                minHeight: 0,
-              } : {
-                flex: 1,
-                position: 'relative',
-                minHeight: 0,
-              }}>
+          <div className="main-content" style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flex: 1,
+            minHeight: 0, // Important for proper flex shrinking
+          }}>
 
-            <EditorPanel className={`
-              opacity-animated
-              ${layout.mode === 'single' && layout.focus !== 'editor' ? 'opacity-0' : ''}
-              ${layout.mode === 'single' ? 'absolute-fill' : ''}
-            `} style={getPanelStyle('editor')} />
-            <ViewerPanel className={layout.mode === 'single' ? `absolute-fill` : ''} style={getPanelStyle('viewer')} />
-            <CustomizerPanel className={`
-              opacity-animated
-              ${layout.mode === 'single' && layout.focus !== 'customizer' ? 'opacity-0' : ''}
-              ${layout.mode === 'single' ? `absolute-fill` : ''}
-            `} style={getPanelStyle('customizer')} />
+            <EditorPanel 
+              className="editor-panel"
+              style={{
+                flex: getPanelFlex('editor'),
+                display: getPanelDisplay('editor'),
+                minWidth: 0, // Important for proper flex shrinking
+                borderRight: isMultiLayout ? '1px solid var(--surface-border)' : 'none'
+              }} 
+            />
+            
+            <ViewerPanel 
+              className="viewer-panel"
+              style={{
+                flex: getPanelFlex('viewer'),
+                display: getPanelDisplay('viewer'),
+                minWidth: 0, // Important for proper flex shrinking
+                borderRight: isMultiLayout && isCustomizerOpen ? '1px solid var(--surface-border)' : 'none'
+              }} 
+            />
+            
+            <CustomizerPanel 
+              className="customizer-panel"
+              style={{
+                flex: getPanelFlex('customizer'),
+                display: getPanelDisplay('customizer'),
+                minWidth: 0, // Important for proper flex shrinking
+                maxHeight: '100%'
+              }} 
+            />
           </div>
 
-          <div style={{ flexShrink: 0 }}>
-            <Footer />
-          </div>
+          <Footer />
           <ConfirmDialog />
         </div>
       </FSContext.Provider>

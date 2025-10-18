@@ -4,6 +4,7 @@ import { State, StatePersister } from '../state/app-state';
 import { createEditorFS } from '../fs/filesystem';
 import { registerOpenSCADLanguage } from '../language/openscad-register-language';
 import { zipArchives } from '../fs/zip-archives';
+import { registerCustomAppHeightCSSProperty } from '../utils';
 
 export interface UseOpenSCADConfig {
   initialState: State;
@@ -29,8 +30,11 @@ export function useOpenSCAD(config: UseOpenSCADConfig): UseOpenSCADReturn {
 
     const init = async () => {
       try {
-        // Create filesystem
-        const filesystem = await createEditorFS({ prefix: '/tmp', allowPersistence: false }); // TODO: Support standalone mode
+        // Register custom app height CSS property for mobile compatibility
+        registerCustomAppHeightCSSProperty();
+
+        // Create filesystem - libraries are mounted at /libraries/
+        const filesystem = await createEditorFS({ prefix: '/libraries/', allowPersistence: false }); // TODO: Support standalone mode
 
         if (!mounted) return;
 

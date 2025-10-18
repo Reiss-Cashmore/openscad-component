@@ -58,4 +58,31 @@ try {
   console.log('⚠ No README.md to copy');
 }
 
+// Copy built worker and its dependencies to public for demo app
+try {
+  const { readdirSync } = await import('fs');
+  
+  // Copy worker
+  copyFileSync(
+    resolve(__dirname, '../dist/openscad-worker.js'),
+    resolve(__dirname, '../public/openscad-worker.js')
+  );
+  
+  // Copy all chunk files that the worker might need (filesystem, utils, zip-archives)
+  const distFiles = readdirSync(resolve(__dirname, '../dist'));
+  for (const file of distFiles) {
+    if (file.match(/^(filesystem|utils|zip-archives)-[a-zA-Z0-9]+\.js$/)) {
+      copyFileSync(
+        resolve(__dirname, '../dist', file),
+        resolve(__dirname, '../public', file)
+      );
+      console.log(`✓ Copied ${file} to public/`);
+    }
+  }
+  
+  console.log('✓ Copied openscad-worker.js and dependencies to public/');
+} catch (err) {
+  console.log('⚠ Failed to copy worker:', err.message);
+}
+
 console.log('✓ Created dist/package.json');

@@ -5,6 +5,7 @@ import { State, StatePersister } from './state/app-state';
 import { App } from './components/App';
 import { useOpenSCAD } from './hooks/useOpenSCAD';
 import { createInitialState } from './state/initial-state';
+import './index.css';
 
 export interface LibraryConfig {
   name: string;

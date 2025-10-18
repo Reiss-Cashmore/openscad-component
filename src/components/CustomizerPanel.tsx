@@ -44,20 +44,22 @@ export default function CustomizerPanel({className, style}: {className?: string,
 
   return (
     <div
-        className={className}
+        className={`customizer-panel ${className ?? ''}`}
         style={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: 0,
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'var(--surface-ground)',
           overflow: 'auto',
           ...style,
         }}>
       {groups.map(([group, params]) => (
         <Fieldset 
             style={{
-              margin: '5px 10px 5px 10px',
-              // backgroundColor: 'transparent',
-              backgroundColor: 'rgba(255,255,255,0.4)',
+              margin: '8px',
+              backgroundColor: 'var(--surface-card)',
+              border: '1px solid var(--surface-border)',
             }}
             onCollapse={() => setTabOpen(group, false)}
             onExpand={() => setTabOpen(group, true)}
@@ -185,7 +187,9 @@ function ParameterInput({param, value, className, style, handleChange}: {param: 
             }}
             tooltipOptions={{position: 'left'}}
             icon='pi pi-refresh'
-            className='p-button-text'/>
+            className='p-button-text p-button-sm'
+            aria-label={`Reset ${param.name} to default`}
+            title={`Reset ${param.name} to default`}/>
         </div>
       </div>
       {!Array.isArray(param.initial) && param.type === 'number' && param.min !== undefined && (

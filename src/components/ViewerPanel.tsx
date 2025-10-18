@@ -170,14 +170,14 @@ export default function ViewerPanel({className, style}: {className?: string, sty
   });
 
   return (
-    <div className={className}
+    <div className={`viewer-panel ${className ?? ''}`}
           style={{
               display: 'flex',
               flexDirection: 'column', 
               position: 'relative',
-              flex: 1,
-              minHeight: 0,
+              height: '100%',
               width: '100%',
+              backgroundColor: 'var(--surface-ground)',
               ...(style ?? {})
           }}>
       <Toast ref={toastRef} position='top-right'  />

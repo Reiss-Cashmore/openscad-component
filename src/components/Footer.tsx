@@ -88,7 +88,8 @@ export default function Footer({style}: {style?: CSSProperties}) {
             icon="pi pi-align-left"
             text={!state.view.logs}
             onClick={() => model.logsVisible = !state.view.logs}
-            className={maxMarkerSeverity && `p-button-${severityByMarkerSeverity.get(maxMarkerSeverity) ?? 'success'}`}
+            className={`p-button-sm ${maxMarkerSeverity && `p-button-${severityByMarkerSeverity.get(maxMarkerSeverity) ?? 'success'}`}`}
+            label={state.view.logs ? "Hide Logs" : "Show Logs"}
             >
           {getBadge(monaco.MarkerSeverity.Error)}
           {getBadge(monaco.MarkerSeverity.Warning)}

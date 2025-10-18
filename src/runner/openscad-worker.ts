@@ -1,96 +1,25 @@
 // Portions of this file are Copyright 2021 Google LLC, and licensed under GPL2+. See COPYING.
 
 /// <reference lib="webworker" />
+import OpenSCAD from "../wasm/openscad.js";
 
+import { createEditorFS, symlinkLibraries } from "../fs/filesystem.ts";
+import { OpenSCADInvocation, OpenSCADInvocationCallback, OpenSCADInvocationResults } from "./openscad-runner.ts";
+import { deployedArchiveNames } from "../fs/zip-archives.ts";
+import { fetchSource } from "../utils.ts";
+
+declare var BrowserFS: BrowserFSInterface;
 declare const self: DedicatedWorkerGlobalScope;
 
-// Inline type definitions to avoid any imports that would make this an ES module
 export type MergedOutputs = {stdout?: string, stderr?: string, error?: string}[];
 
-type Source = {
-  path: string;
-  content?: string;
-  url?: string;
-};
-
-type OpenSCADWorkerConfig = {
-  wasmUrl?: string;
-  wasmJsUrl?: string;
-};
-
-type OpenSCADInvocation = {
-  mountArchives: boolean;
-  inputs?: Source[];
-  args: string[];
-  outputPaths?: string[];
-  config?: OpenSCADWorkerConfig;
-};
-
-type OpenSCADInvocationResults = {
-  exitCode?: number;
-  error?: string;
-  outputs?: [string, string][];
-  mergedOutputs: MergedOutputs;
-  elapsedMillis: number;
-};
-
-type ProcessStreams = {stderr: string} | {stdout: string};
-type OpenSCADInvocationCallback = {result: OpenSCADInvocationResults} | ProcessStreams;
-
-// Dynamically import dependencies to avoid bundling issues
-let depsLoaded = false;
-let BrowserFS: any;
-let OpenSCAD: any;
-let createEditorFS: any;
-let symlinkLibraries: any;
-let deployedArchiveNames: any;
-let fetchSource: any;
-
-async function loadDependencies() {
-  if (depsLoaded) return;
-  
-  // Load BrowserFS first (it expects to be global)
-  console.log("Loading BrowserFS...");
+// Load BrowserFS on first use
+let browserFSLoaded = false;
+async function ensureBrowserFS() {
+  if (browserFSLoaded) return;
   const browserFSCode = await fetch('/browserfs.min.js').then(r => r.text());
-  // Use indirect eval to execute in global scope (0, eval)('code') executes in global scope
   (0, eval)(browserFSCode);
-  // Ensure BrowserFS is available
-  BrowserFS = (self as any).BrowserFS || (globalThis as any).BrowserFS;
-  if (!BrowserFS) {
-    throw new Error('BrowserFS failed to load');
-  }
-  console.log("BrowserFS loaded:", typeof BrowserFS);
-  
-  // Load OpenSCAD WASM loader (uses import.meta, so must be imported as module)
-  // We can't use static import from /public in Vite, so we create a blob URL module
-  console.log("Loading OpenSCAD WASM module...");
-  let openscadJsCode = await fetch('/wasm/openscad.js').then(r => r.text());
-  // Replace import.meta.url with the actual URL so it can find the WASM file
-  // The openscad.js uses import.meta.url to determine where to load the WASM from
-  const actualWasmBaseUrl = new URL('/wasm/', self.location.href).href;
-  openscadJsCode = openscadJsCode.replace(/import\.meta\.url/g, JSON.stringify(actualWasmBaseUrl + 'openscad.js'));
-  const openscadBlob = new Blob([openscadJsCode], { type: 'application/javascript' });
-  const openscadBlobUrl = URL.createObjectURL(openscadBlob);
-  const openscadModule = await import(/* @vite-ignore */ openscadBlobUrl);
-  URL.revokeObjectURL(openscadBlobUrl);
-  // Assign OpenSCAD from the module (check both default export and named export)
-  OpenSCAD = openscadModule.default || openscadModule.OpenSCAD || (self as any).OpenSCAD;
-  console.log("OpenSCAD WASM module loaded:", typeof OpenSCAD);
-  
-  // Now dynamically import our ES modules
-  console.log("Loading filesystem modules...");
-  const fsModule = await import("../fs/filesystem");
-  createEditorFS = fsModule.createEditorFS;
-  symlinkLibraries = fsModule.symlinkLibraries;
-  
-  const zipModule = await import("../fs/zip-archives");
-  deployedArchiveNames = zipModule.deployedArchiveNames;
-  
-  const utilsModule = await import("../utils");
-  fetchSource = utilsModule.fetchSource;
-  
-  depsLoaded = true;
-  console.log("All dependencies loaded");
+  browserFSLoaded = true;
 }
 
 function callback(payload: OpenSCADInvocationCallback) {
@@ -98,23 +27,7 @@ function callback(payload: OpenSCADInvocationCallback) {
 }
 
 self.addEventListener('message', async (e: MessageEvent<OpenSCADInvocation>) => {
-  console.log('OpenSCAD worker received message:', e.data);
-  
-  // Load dependencies first
-  try {
-    await loadDependencies();
-  } catch (err) {
-    console.error('Failed to load dependencies:', err);
-    callback({
-      result: {
-        exitCode: undefined,
-        error: `Failed to load dependencies: ${err}`,
-        mergedOutputs: [{ error: `Failed to load dependencies: ${err}` }],
-        elapsedMillis: 0,
-      }
-    });
-    return;
-  }
+  await ensureBrowserFS();
   const {
     mountArchives,
     inputs,
@@ -126,7 +39,6 @@ self.addEventListener('message', async (e: MessageEvent<OpenSCADInvocation>) => 
   let instance: any;
   const start = performance.now();
   try {
-    console.log('Initializing OpenSCAD...');
     instance = await OpenSCAD({
       noInitialRun: true,
       'print': (text: string) => {
@@ -140,10 +52,8 @@ self.addEventListener('message', async (e: MessageEvent<OpenSCADInvocation>) => 
         mergedOutputs.push({ stderr: text })
       },
     });
-    console.log('OpenSCAD instance created.');
 
     if (mountArchives) {
-      console.log('Mounting archives...');
       // This will mount lots of libraries' ZIP archives under /libraries/<name> -> <name>.zip
       await createEditorFS({prefix: '', allowPersistence: false});
       
@@ -162,7 +72,6 @@ self.addEventListener('message', async (e: MessageEvent<OpenSCADInvocation>) => 
       instance.FS.mount(BFS, {root: '/'}, '/libraries');
 
       await symlinkLibraries(deployedArchiveNames, instance.FS, '/libraries', "/");
-      console.log('Archives mounted.');
     }
 
     // Fonts are seemingly resolved from $(cwd)/fonts
@@ -236,8 +145,7 @@ self.addEventListener('message', async (e: MessageEvent<OpenSCADInvocation>) => 
 
     console.debug(result);
     callback({result});
-  } catch (e) {
-    console.error('Error in OpenSCAD worker:', e);
+  } catch (e) { 
     const end = performance.now();
     const elapsedMillis = end - start;
 

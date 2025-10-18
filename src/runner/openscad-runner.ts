@@ -2,9 +2,9 @@
 
 import { AbortablePromise } from "../utils.ts";
 import { Source } from "../state/app-state.ts";
-import OpenSCADWorker from "./openscad-worker.ts?worker";
+import { MergedOutputs } from "./openscad-worker.ts";
 
-export type MergedOutputs = {stdout?: string, stderr?: string, error?: string}[];
+export type { MergedOutputs };
 
 export type OpenSCADWorkerConfig = {
   wasmUrl?: string;
@@ -46,11 +46,10 @@ export function spawnOpenSCAD(
   }
     
   return AbortablePromise<OpenSCADInvocationResults>((resolve: (result: OpenSCADInvocationResults) => void, reject: (error: any) => void) => {
-    // Use Vite's worker import (processes TypeScript and handles modules correctly)
-    const workerInstance = new OpenSCADWorker();
-    worker = workerInstance;
+    // Load worker as ES module (our built worker uses ES module syntax)
+    worker = new Worker('./openscad-worker.js', { type: 'module' });
     rejection = reject;
-    workerInstance.onmessage = (e: MessageEvent<OpenSCADInvocationCallback>) => {
+    worker.onmessage = (e: MessageEvent<OpenSCADInvocationCallback>) => {
       if ('result' in e.data) {
         resolve(e.data.result);
         terminate();
@@ -58,23 +57,8 @@ export function spawnOpenSCAD(
         streamsCallback(e.data);
       }
     }
-    const globalConfig =
-      (globalThis as any).__OpenSCADWorkerConfig ?? {};
-
-    const config: OpenSCADWorkerConfig = {
-      wasmUrl: globalConfig.wasmUrl ?? invocation.config?.wasmUrl,
-      wasmJsUrl:
-        globalConfig.wasmJsUrl ??
-        invocation.config?.wasmJsUrl ??
-        (globalConfig.wasmUrl
-          ? globalConfig.wasmUrl.replace(/\.wasm(\?.*)?$/, ".js$1")
-          : undefined),
-    };
-
-    workerInstance.postMessage({
-      ...invocation,
-      config,
-    });
+    
+    worker.postMessage(invocation);
 
     return () => {
       terminate();

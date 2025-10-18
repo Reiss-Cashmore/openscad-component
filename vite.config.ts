@@ -33,17 +33,32 @@ export default defineConfig(({ command }) => {
           'react-dom',
           'react/jsx-runtime'
         ],
-        output: {
-          globals: {
-            react: 'React',
-            'react-dom': 'ReactDOM',
-            'react/jsx-runtime': 'react/jsx-runtime'
+        output: [
+          {
+            format: 'es',
+            entryFileNames: '[name].js',
+            chunkFileNames: '[name]-[hash].js',
+            globals: {
+              react: 'React',
+              'react-dom': 'ReactDOM',
+              'react/jsx-runtime': 'react/jsx-runtime'
+            },
+            assetFileNames: (assetInfo) => {
+              if (assetInfo.name === 'style.css') return 'openscad-playground.css';
+              return assetInfo.name || '';
+            }
           },
-          assetFileNames: (assetInfo) => {
-            if (assetInfo.name === 'style.css') return 'style.css';
-            return assetInfo.name || '';
+          {
+            format: 'cjs',
+            entryFileNames: '[name].cjs',
+            chunkFileNames: '[name]-[hash].cjs',
+            globals: {
+              react: 'React',
+              'react-dom': 'ReactDOM',
+              'react/jsx-runtime': 'react/jsx-runtime'
+            },
           }
-        }
+        ]
       },
       sourcemap: true,
       minify: 'esbuild',

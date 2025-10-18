@@ -49,11 +49,15 @@ export default function HelpMenu({className, style}: {className?: string, style?
         },
       ] as MenuItem[]} popup ref={menuRef} />
 
-      <Button title="Help & Licenses"
+      <Button 
+        title="Help & Licenses"
+        className="p-button-sm"
         rounded
         text
         icon="pi pi-question-circle"
-        onClick={(e) => menuRef.current && menuRef.current.toggle(e)} />
+        onClick={(e) => menuRef.current && menuRef.current.toggle(e)}
+        aria-label="Help & Licenses"
+      />
     </>
   );
 }

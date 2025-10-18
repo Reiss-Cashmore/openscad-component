@@ -67,13 +67,16 @@ export default function SettingsMenu({className, style}: {className?: string, st
         ] : []),
       ] as MenuItem[]} popup ref={settingsMenu} />
     
-      <Button title="Settings menu"
-          style={style}
-          className={className}
-          rounded
-          text
-          icon="pi pi-cog"
-          onClick={(e) => settingsMenu.current && settingsMenu.current.toggle(e)} />
+      <Button 
+        title="Settings menu"
+        style={style}
+        className={`${className ?? ''} p-button-sm`}
+        rounded
+        text
+        icon="pi pi-cog"
+        onClick={(e) => settingsMenu.current && settingsMenu.current.toggle(e)}
+        aria-label="Settings menu"
+      />
     </>
   );
 }
