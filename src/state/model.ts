@@ -412,7 +412,8 @@ export class Model {
       }
       if (displayFile.name.endsWith('.off')) {
         const offData = parseOff(await displayFile.text());
-        displayFile = new File([await exportGlb(offData)], displayFile.name.replace('.off', '.glb'));
+        const includeBuildPlate = this.state.view.showBuildPlate ?? true;
+        displayFile = new File([await exportGlb(offData, undefined, includeBuildPlate)], displayFile.name.replace('.off', '.glb'));
       }
       const outFileURL = URL.createObjectURL(output.outFile);
       const displayFileURL = displayFile && await readFileAsDataURL(displayFile);

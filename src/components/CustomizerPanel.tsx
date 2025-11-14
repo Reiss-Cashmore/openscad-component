@@ -3,14 +3,22 @@
 import React, { CSSProperties, useContext } from 'react';
 import { ModelContext } from './contexts.ts';
 
-import { Dropdown } from 'primereact/dropdown';
-import { Slider } from 'primereact/slider';
-import { Checkbox } from 'primereact/checkbox';
-import { InputNumber } from 'primereact/inputnumber';
-import { InputText } from 'primereact/inputtext';
-import { Fieldset } from 'primereact/fieldset';
+import { 
+  Select, 
+  Slider, 
+  Checkbox, 
+  TextField, 
+  Accordion, 
+  AccordionSummary, 
+  AccordionDetails, 
+  MenuItem, 
+  Box,
+  FormControlLabel,
+  IconButton,
+  Typography
+} from '@mui/material';
+import { ExpandMore as ExpandMoreIcon, Refresh as RefreshIcon } from '@mui/icons-material';
 import { Parameter } from '../state/customizer-types.ts';
-import { Button } from 'primereact/button';
 
 export default function CustomizerPanel({className, style}: {className?: string, style?: CSSProperties}) {
 
@@ -43,169 +51,165 @@ export default function CustomizerPanel({className, style}: {className?: string,
   }
 
   return (
-    <div
+    <Box
         className={`customizer-panel ${className ?? ''}`}
-        style={{
+        sx={{
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
           width: '100%',
-          backgroundColor: 'var(--surface-ground)',
+          backgroundColor: 'background.default',
           overflow: 'auto',
+          p: 1,
           ...style,
         }}>
       {groups.map(([group, params]) => (
-        <Fieldset 
-            style={{
-              margin: '8px',
-              backgroundColor: 'var(--surface-card)',
-              border: '1px solid var(--surface-border)',
-            }}
-            onCollapse={() => setTabOpen(group, false)}
-            onExpand={() => setTabOpen(group, true)}
-            collapsed={collapsedTabSet.has(group)}
+        <Accordion 
             key={group}
-            legend={group}
-            toggleable={true}>
-          {params.map((param) => (
-            <ParameterInput
-              key={param.name}
-              value={(state.params.vars ?? {})[param.name]}
-              param={param}
-              handleChange={handleChange} />
-          ))}
-        </Fieldset>
+            expanded={!collapsedTabSet.has(group)}
+            onChange={(_, expanded) => setTabOpen(group, expanded)}
+            sx={{ 
+              mb: 1,
+              '&:first-of-type': {
+                borderRadius: '12px',
+              },
+              '&:last-of-type': {
+                borderRadius: '12px',
+              },
+            }}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>{group}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {params.map((param) => (
+                <ParameterInput
+                  key={param.name}
+                  value={(state.params.vars ?? {})[param.name]}
+                  param={param}
+                  handleChange={handleChange} />
+              ))}
+            </Box>
+          </AccordionDetails>
+        </Accordion>
       ))}
-    </div>
+    </Box>
   );
 };
 
 function ParameterInput({param, value, className, style, handleChange}: {param: Parameter, value: any, className?: string, style?: CSSProperties, handleChange: (key: string, value: any) => void}) {
+  const isDefault = value === undefined || JSON.stringify(value) === JSON.stringify(param.initial);
+
   return (
-    <div 
-      style={{
-        flex: 1,
-        ...style,
-        display: 'flex',
-        flexDirection: 'column',
-      }}>
-      <div 
-        style={{
-          flex: 1,
-          display: 'flex',
-          margin: '10px -10px 10px 5px',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <div 
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-          <label><b>{param.name}</b></label>
-          <div>{param.caption}</div>
-        </div>
-        <div 
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          {param.type === 'number' && 'options' in param && (
-            <Dropdown
-              style={{flex: 1}}
-              value={value || param.initial}
-              options={param.options}
-              onChange={(e) => handleChange(param.name, e.value)}
-              optionLabel="name"
-              optionValue="value"
-            />
+    <Box sx={{ display: 'flex', flexDirection: 'column', ...style }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="subtitle2" fontWeight="bold">{param.name}</Typography>
+          {param.caption && <Typography variant="caption" color="text.secondary">{param.caption}</Typography>}
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {param.type === 'number' && 'options' in param && param.options && (
+            <Select
+              size="small"
+              value={value ?? param.initial}
+              onChange={(e) => handleChange(param.name, e.target.value)}
+              sx={{ minWidth: 120 }}
+            >
+              {param.options.map((opt: any) => (
+                <MenuItem key={opt.value} value={opt.value}>{opt.name}</MenuItem>
+              ))}
+            </Select>
           )}
           {param.type === 'string' && param.options && (
-            <Dropdown
-              value={value || param.initial}
-              options={param.options}
-              onChange={(e) => handleChange(param.name, e.value)}
-              optionLabel="name"
-              optionValue="value"
-            />
+            <Select
+              size="small"
+              value={value ?? param.initial}
+              onChange={(e) => handleChange(param.name, e.target.value)}
+              sx={{ minWidth: 120 }}
+            >
+              {param.options.map((opt: any) => (
+                <MenuItem key={opt.value} value={opt.value}>{opt.name}</MenuItem>
+              ))}
+            </Select>
           )}
           {param.type === 'boolean' && (
-            <Checkbox
-              checked={value ?? param.initial}
-              onChange={(e) => handleChange(param.name, e.checked)}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={value ?? param.initial}
+                  onChange={(e) => handleChange(param.name, e.target.checked)}
+                />
+              }
+              label=""
             />
           )}
           {!Array.isArray(param.initial) && param.type === 'number' && !('options' in param) && (
-            <InputNumber
-              value={value || param.initial}
-              showButtons
-              size={5}
-              onValueChange={(e) => handleChange(param.name, e.value)}
+            <TextField
+              type="number"
+              size="small"
+              value={value ?? param.initial}
+              onChange={(e) => handleChange(param.name, parseFloat(e.target.value))}
+              inputProps={{ 
+                step: param.step || 1,
+                min: param.min,
+                max: param.max 
+              }}
+              sx={{ width: 100 }}
             />
           )}
           {param.type === 'string' && !param.options && (
-            <InputText
-              style={{flex: 1}}
-              value={value || param.initial}
+            <TextField
+              size="small"
+              value={value ?? param.initial}
               onChange={(e) => handleChange(param.name, e.target.value)}
+              sx={{ minWidth: 120 }}
             />
           )}
           {Array.isArray(param.initial) && 'min' in param && (
-            <div style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'row',
-            }}>
+            <Box sx={{ display: 'flex', gap: 1 }}>
               {param.initial.map((_, index) => (
-                <InputNumber
-                  style={{flex: 1}}
+                <TextField
                   key={index}
+                  type="number"
+                  size="small"
                   value={value?.[index] ?? (param.initial as any)[index]}
-                  min={param.min}
-                  max={param.max}
-                  showButtons
-                  size={5}
-                  step={param.step}
-                  onValueChange={(e) => {
+                  onChange={(e) => {
                     const newArray = [...(value ?? param.initial)];
-                    newArray[index] = e.value;
+                    newArray[index] = parseFloat(e.target.value);
                     handleChange(param.name, newArray);
                   }}
+                  inputProps={{ 
+                    step: param.step || 1,
+                    min: param.min,
+                    max: param.max 
+                  }}
+                  sx={{ width: 80 }}
                 />
               ))}
-            </div>
+            </Box>
           )}
-          <Button
+          <IconButton
+            size="small"
             onClick={() => handleChange(param.name, param.initial)}
-            style={{
-              marginRight: '0',
-              visibility: value === undefined || (JSON.stringify(value) === JSON.stringify(param.initial)) ? 'hidden' : 'visible',
-            }}
-            tooltipOptions={{position: 'left'}}
-            icon='pi pi-refresh'
-            className='p-button-text p-button-sm'
-            aria-label={`Reset ${param.name} to default`}
-            title={`Reset ${param.name} to default`}/>
-        </div>
-      </div>
-      {!Array.isArray(param.initial) && param.type === 'number' && param.min !== undefined && (
+            sx={{ visibility: isDefault ? 'hidden' : 'visible' }}
+            title={`Reset ${param.name} to default`}
+          >
+            <RefreshIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      </Box>
+      {!Array.isArray(param.initial) && param.type === 'number' && param.min !== undefined && !('options' in param) && (
         <Slider
-          style={{
-            flex: 1,
-            minHeight: '5px',
-            margin: '5px 40px 5px 5px',
-          }}
-          value={value || param.initial}
+          value={value ?? param.initial}
           min={param.min}
           max={param.max}
-          step={param.step}
-          onChange={(e) => handleChange(param.name, e.value)}
+          step={param.step || 1}
+          onChange={(_, newValue) => handleChange(param.name, newValue)}
+          valueLabelDisplay="auto"
+          sx={{ mr: 3 }}
         />
       )}
-    </div>
+    </Box>
   );
 }

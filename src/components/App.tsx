@@ -8,8 +8,9 @@ import ViewerPanel from './ViewerPanel';
 import Footer from './Footer';
 import { ModelContext, FSContext } from './contexts';
 import PanelSwitcher from './PanelSwitcher';
-import { ConfirmDialog } from 'primereact/confirmdialog';
 import CustomizerPanel from './CustomizerPanel';
+import { ThemeProvider, CssBaseline, Box } from '@mui/material';
+import { theme } from '../theme';
 
 
 export function App({initialState, statePersister, fs}: {initialState: State, statePersister: StatePersister, fs: FS}) {
@@ -60,60 +61,60 @@ export function App({initialState, statePersister, fs}: {initialState: State, st
   };
 
   return (
-    <ModelContext.Provider value={model}>
-      <FSContext.Provider value={fs}>
-        <div className="app-container" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          width: '100vw',
-          overflow: 'hidden'
-        }}>
-          
-          <PanelSwitcher />
-    
-          <div className="main-content" style={{
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ModelContext.Provider value={model}>
+        <FSContext.Provider value={fs}>
+          <Box sx={{
             display: 'flex',
-            flexDirection: 'row',
-            flex: 1,
-            minHeight: 0, // Important for proper flex shrinking
+            flexDirection: 'column',
+            height: '100vh',
+            width: '100vw',
+            overflow: 'hidden'
           }}>
-
-            <EditorPanel 
-              className="editor-panel"
-              style={{
-                flex: getPanelFlex('editor'),
-                display: getPanelDisplay('editor'),
-                minWidth: 0, // Important for proper flex shrinking
-                borderRight: isMultiLayout ? '1px solid var(--surface-border)' : 'none'
-              }} 
-            />
             
-            <ViewerPanel 
-              className="viewer-panel"
-              style={{
-                flex: getPanelFlex('viewer'),
-                display: getPanelDisplay('viewer'),
-                minWidth: 0, // Important for proper flex shrinking
-                borderRight: isMultiLayout && isCustomizerOpen ? '1px solid var(--surface-border)' : 'none'
-              }} 
-            />
-            
-            <CustomizerPanel 
-              className="customizer-panel"
-              style={{
-                flex: getPanelFlex('customizer'),
-                display: getPanelDisplay('customizer'),
-                minWidth: 0, // Important for proper flex shrinking
-                maxHeight: '100%'
-              }} 
-            />
-          </div>
+            <PanelSwitcher />
+      
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              flex: 1,
+              minHeight: 0,
+            }}>
 
-          <Footer />
-          <ConfirmDialog />
-        </div>
-      </FSContext.Provider>
-    </ModelContext.Provider>
+              <EditorPanel 
+                className="editor-panel"
+                style={{
+                  flex: getPanelFlex('editor'),
+                  display: getPanelDisplay('editor'),
+                  minWidth: 0,
+                }}
+              />
+              
+              <ViewerPanel 
+                className="viewer-panel"
+                style={{
+                  flex: getPanelFlex('viewer'),
+                  display: getPanelDisplay('viewer'),
+                  minWidth: 0,
+                }}
+              />
+              
+              <CustomizerPanel 
+                className="customizer-panel"
+                style={{
+                  flex: getPanelFlex('customizer'),
+                  display: getPanelDisplay('customizer'),
+                  minWidth: 0,
+                  maxHeight: '100%'
+                }}
+              />
+            </Box>
+
+            <Footer />
+          </Box>
+        </FSContext.Provider>
+      </ModelContext.Provider>
+    </ThemeProvider>
   );
 }

@@ -1,63 +1,63 @@
 // Portions of this file are Copyright 2021 Google LLC, and licensed under GPL2+. See COPYING.
 
-import { CSSProperties, useRef } from 'react';
-import { Button } from 'primereact/button';
-import { MenuItem } from 'primereact/menuitem';
-import { Menu } from 'primereact/menu';
+import { CSSProperties, useState } from 'react';
+import { IconButton, Menu, MenuItem } from '@mui/material';
+import { HelpOutline as HelpIcon } from '@mui/icons-material';
 
 export default function HelpMenu({className, style}: {className?: string, style?: CSSProperties}) {
-  const menuRef = useRef<Menu>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const openLink = (url: string) => {
+    window.open(url, '_blank');
+    handleClose();
+  };
+
   return (
     <>
-      <Menu style={style} className={className}  model={[
-        {
-          label: "openscad-playground",
-          icon: 'pi pi-github',
-          url: 'https://github.com/openscad/openscad-playground/',
-          target: '_blank'
-        },
-        {
-          label: 'LICENSES',
-          icon: 'pi pi-info-circle',
-          url: 'https://github.com/openscad/openscad-playground/blob/main/LICENSE.md',
-          target: '_blank'
-        },
-        {
-          label: 'OpenSCAD Docs',
-          icon: 'pi pi-book',
-          url: 'https://openscad.org/documentation.html',
-          target: '_blank'
-        },
-        {
-          label: 'Customizer Syntax',
-          icon: 'pi pi-book',
-          url: 'https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Customizer',
-          target: '_blank'
-        },
-        
-        {
-          label: 'OpenSCAD Cheatsheet',
-          icon: 'pi pi-palette',
-          url: 'https://openscad.org/cheatsheet/',
-          target: '_blank'
-        },
-        {
-          label: 'BOSL2 Cheatsheet',
-          icon: 'pi pi-palette',
-          url: 'https://github.com/BelfrySCAD/BOSL2/wiki/CheatSheet',
-          target: '_blank'
-        },
-      ] as MenuItem[]} popup ref={menuRef} />
-
-      <Button 
-        title="Help & Licenses"
-        className="p-button-sm"
-        rounded
-        text
-        icon="pi pi-question-circle"
-        onClick={(e) => menuRef.current && menuRef.current.toggle(e)}
+      <IconButton 
+        size="small"
+        onClick={handleClick}
         aria-label="Help & Licenses"
-      />
+        title="Help & Licenses"
+        style={style}
+        className={className}
+      >
+        <HelpIcon />
+      </IconButton>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => openLink('https://github.com/openscad/openscad-playground/')}>
+          openscad-playground
+        </MenuItem>
+        <MenuItem onClick={() => openLink('https://github.com/openscad/openscad-playground/blob/main/LICENSE.md')}>
+          LICENSES
+        </MenuItem>
+        <MenuItem onClick={() => openLink('https://openscad.org/documentation.html')}>
+          OpenSCAD Docs
+        </MenuItem>
+        <MenuItem onClick={() => openLink('https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Customizer')}>
+          Customizer Syntax
+        </MenuItem>
+        <MenuItem onClick={() => openLink('https://openscad.org/cheatsheet/')}>
+          OpenSCAD Cheatsheet
+        </MenuItem>
+        <MenuItem onClick={() => openLink('https://github.com/BelfrySCAD/BOSL2/wiki/CheatSheet')}>
+          BOSL2 Cheatsheet
+        </MenuItem>
+      </Menu>
     </>
   );
 }

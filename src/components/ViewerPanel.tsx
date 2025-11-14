@@ -2,7 +2,7 @@
 
 import { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { ModelContext } from './contexts.ts';
-import { Toast } from 'primereact/toast';
+import { Snackbar } from '@mui/material';
 import { blurHashToImage, imageToBlurhash, imageToThumbhash, thumbHashToImage } from '../io/image_hashes.ts';
 
 declare global {
@@ -48,7 +48,7 @@ function getClosestPredefinedOrbitIndex(theta: number, phi: number): [number, nu
   return [index, dist, radDistances[index]];
 }
 
-const originalOrbit = (([name, theta, phi]) => `${theta}rad ${phi}rad auto`)(PREDEFINED_ORBITS[0]);
+const originalOrbit = (([name, theta, phi]) => `${theta}rad ${phi}rad 150%`)(PREDEFINED_ORBITS[0]);
 
 export default function ViewerPanel({className, style}: {className?: string, style?: CSSProperties}) {
   const model = useContext(ModelContext);
@@ -58,7 +58,8 @@ export default function ViewerPanel({className, style}: {className?: string, sty
   const [interactionPrompt, setInteractionPrompt] = useState('auto');
   const modelViewerRef = useRef<any>();
   const axesViewerRef = useRef<any>();
-  const toastRef = useRef<Toast>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const [loadedUri, setLoadedUri] = useState<string | undefined>();
 
@@ -155,7 +156,9 @@ export default function ViewerPanel({className, style}: {className?: string, sty
         const [name, theta, phi] = PREDEFINED_ORBITS[newIndex];
         Object.assign(modelOrbit, {theta, phi});
         const newOrbit = modelViewerRef.current.cameraOrbit = axesViewerRef.current.cameraOrbit = modelOrbit.toString();
-        toastRef.current?.show({severity: 'info', detail: `${name} view`, life: 1000,});
+        setSnackbarMessage(`${name} view`);
+        setSnackbarOpen(true);
+        setTimeout(() => setSnackbarOpen(false), 1000);
         setInteractionPrompt('none');
       }
     }
@@ -177,10 +180,16 @@ export default function ViewerPanel({className, style}: {className?: string, sty
               position: 'relative',
               height: '100%',
               width: '100%',
-              backgroundColor: 'var(--surface-ground)',
+              backgroundColor: '#2a2a2a',
               ...(style ?? {})
           }}>
-      <Toast ref={toastRef} position='top-right'  />
+      <Snackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        autoHideDuration={1000}
+        onClose={() => setSnackbarOpen(false)}
+      />
       <style>
         {`
           @keyframes pulse {
@@ -203,6 +212,7 @@ export default function ViewerPanel({className, style}: {className?: string, sty
         }} />
       }
 
+
       <model-viewer
         orientation="0deg -90deg 0deg"
         class="main-viewer"
@@ -213,12 +223,14 @@ export default function ViewerPanel({className, style}: {className?: string, sty
           position: 'absolute',
           width: '100%',
           height: '100%',
+          zIndex: 1,
         }}
         camera-orbit={originalOrbit}
         interaction-prompt={interactionPrompt}
         environment-image="./skybox-lights.jpg"
-        max-camera-orbit="auto 180deg auto"
-        min-camera-orbit="auto 0deg auto"
+        max-camera-orbit="auto 180deg 500%"
+        min-camera-orbit="auto 0deg 10%"
+        max-field-of-view="45deg"
         camera-controls
         ar
         ref={modelViewerRef}

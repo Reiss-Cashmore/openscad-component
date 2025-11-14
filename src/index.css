@@ -1,16 +1,19 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: var(--font-family);
-  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
+  font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 /* Layout utility classes */
@@ -31,4 +34,13 @@ code {
 .opacity-0 {
   opacity: 0;
   pointer-events: none;
+}
+
+/* Monaco editor dark theme override */
+.monaco-editor {
+  background-color: transparent !important;
+}
+
+.monaco-editor .margin {
+  background-color: #1e1e1e !important;
 }

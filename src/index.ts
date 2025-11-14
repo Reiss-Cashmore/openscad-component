@@ -22,8 +22,4 @@ export { spawnOpenSCAD } from './runner/openscad-runner';
 export { export3MF } from './io/export_3mf';
 
 // Import styles
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.min.css";
 import './index.css';

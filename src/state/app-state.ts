@@ -55,6 +55,7 @@ export interface State {
     
     color: string,
     showAxes?: boolean,
+    showBuildPlate?: boolean,
     lineNumbers?: boolean,
   }
 

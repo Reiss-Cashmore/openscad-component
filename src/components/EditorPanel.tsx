@@ -4,10 +4,11 @@ import React, { CSSProperties, useContext, useRef, useState } from 'react';
 import Editor, { loader, Monaco } from '@monaco-editor/react';
 import openscadEditorOptions from '../language/openscad-editor-options.ts';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Button } from 'primereact/button';
-import { MenuItem } from 'primereact/menuitem';
-import { Menu } from 'primereact/menu';
+import { TextField, IconButton, Box, Menu, MenuItem } from '@mui/material';
+import { 
+  MoreHoriz as MoreIcon, 
+  ChevronLeft as ChevronLeftIcon,
+} from '@mui/icons-material';
 import { buildUrlForStateParams } from '../state/fragment-state.ts';
 import { getBlankProjectState, defaultSourcePath } from '../state/initial-state.ts';
 import { ModelContext, FSContext } from './contexts.ts';
@@ -30,7 +31,8 @@ export default function EditorPanel({className, style}: {className?: string, sty
   const model = useContext(ModelContext);
   if (!model) throw new Error('No model');
 
-  const menu = useRef<Menu>(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(menuAnchorEl);
 
   const state = model.state;
 
@@ -73,114 +75,88 @@ export default function EditorPanel({className, style}: {className?: string, sty
   }
 
   return (
-    <div className={`editor-panel ${className ?? ''}`} style={{
+    <Box className={`editor-panel ${className ?? ''}`} sx={{
       display: 'flex',
       flexDirection: 'column',
       height: '100%',
       width: '100%',
-      backgroundColor: 'var(--surface-ground)',
+      backgroundColor: 'background.default',
       ...(style ?? {})
     }}>
-      <div className='editor-toolbar' style={{
+      <Box sx={{
         display: 'flex',
         flexDirection: 'row',
-        gap: '8px',
-        padding: '8px',
-        backgroundColor: 'var(--surface-card)',
-        borderBottom: '1px solid var(--surface-border)',
+        gap: 1,
+        px: 2,
+        py: 1.5,
+        backgroundColor: 'background.paper',
+        borderBottom: 1,
+        borderColor: 'divider',
+        alignItems: 'center',
         flexShrink: 0
       }}>
           
-        <Menu model={[
-          {
-            label: "New project",
-            icon: 'pi pi-plus-circle',
-            command: () => window.open(buildUrlForStateParams(getBlankProjectState()), '_blank'),
-            target: '_blank',
-          },
-          {
-            // TODO: share text, title and rendering image
-            // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share
-            label: 'Share project',
-            icon: 'pi pi-share-alt',
-            disabled: true,
-          },
-          {
-            separator: true
-          },  
-          {
-            // TODO: popup to ask for file name
-            label: "New file",
-            icon: 'pi pi-plus',
-            disabled: true,
-          },
-          {
-            label: "Copy to new file",
-            icon: 'pi pi-clone',
-            disabled: true,
-          },
-          {
-            label: "Upload file(s)",
-            icon: 'pi pi-upload',
-            disabled: true,
-          },
-          {
-            label: 'Download sources',
-            icon: 'pi pi-download',
-            disabled: true,
-          },
-          {
-            separator: true
-          },
-          {
-            separator: true
-          },
-          {
-            label: 'Select All',
-            icon: 'pi pi-info-circle',
-            command: () => editor?.trigger(state.params.activePath, 'editor.action.selectAll', null),
-          },
-          {
-            separator: true
-          },
-          {
-            label: 'Find',
-            icon: 'pi pi-search',
-            command: () => editor?.trigger(state.params.activePath, 'actions.find', null),
-          },
-        ] as MenuItem[]} popup ref={menu} />
-        <Button 
-          title="Editor menu" 
-          rounded 
-          text 
-          icon="pi pi-ellipsis-h" 
-          onClick={(e) => menu.current && menu.current.toggle(e)}
-          className="p-button-sm"
+        <IconButton 
+          size="small"
+          onClick={(e) => setMenuAnchorEl(e.currentTarget)}
           aria-label="Editor menu"
-        />
+          title="Editor menu"
+        >
+          <MoreIcon />
+        </IconButton>
+
+        <Menu
+          anchorEl={menuAnchorEl}
+          open={menuOpen}
+          onClose={() => setMenuAnchorEl(null)}
+        >
+          <MenuItem onClick={() => {
+            window.open(buildUrlForStateParams(getBlankProjectState()), '_blank');
+            setMenuAnchorEl(null);
+          }}>
+            New project
+          </MenuItem>
+          <MenuItem disabled>Share project</MenuItem>
+          <MenuItem disabled>New file</MenuItem>
+          <MenuItem disabled>Copy to new file</MenuItem>
+          <MenuItem disabled>Upload file(s)</MenuItem>
+          <MenuItem disabled>Download sources</MenuItem>
+          <MenuItem onClick={() => {
+            editor?.trigger(state.params.activePath, 'editor.action.selectAll', null);
+            setMenuAnchorEl(null);
+          }}>
+            Select All
+          </MenuItem>
+          <MenuItem onClick={() => {
+            editor?.trigger(state.params.activePath, 'actions.find', null);
+            setMenuAnchorEl(null);
+          }}>
+            Find
+          </MenuItem>
+        </Menu>
         
-        <FilePicker 
-            style={{
-              flex: 1,
-            }}/>
+        <Box sx={{ flex: 1 }}>
+          <FilePicker />
+        </Box>
 
         {state.params.activePath !== defaultSourcePath && 
-          <Button 
-            icon="pi pi-chevron-left" 
-            text
+          <IconButton 
+            size="small"
             onClick={() => model.openFile(defaultSourcePath)} 
             title={`Go back to ${defaultSourcePath}`}
-            className="p-button-sm"
             aria-label={`Go back to ${defaultSourcePath}`}
-          />}
+          >
+            <ChevronLeftIcon />
+          </IconButton>
+        }
 
-      </div>
+      </Box>
 
       
-      <div className="editor-content" style={{
+      <Box sx={{
         position: 'relative',
         flex: 1,
-        minHeight: 0, // Important for proper flex shrinking
+        minHeight: 0,
         overflow: 'hidden'
       }}>
         {isMonacoSupported && (
@@ -190,7 +166,7 @@ export default function EditorPanel({className, style}: {className?: string, sty
             path={state.params.activePath}
             value={model.source}
             onChange={s => model.source = s ?? ''}
-            onMount={onMount} // TODO: This looks a bit silly, does it trigger a re-render??
+            onMount={onMount}
             options={{
               ...openscadEditorOptions,
               fontSize: 16,
@@ -199,30 +175,33 @@ export default function EditorPanel({className, style}: {className?: string, sty
           />
         )}
         {!isMonacoSupported && (
-          <InputTextarea 
+          <TextField 
             className="openscad-editor absolute-fill"
             value={model.source}
-            onChange={s => model.source = s.target.value ?? ''}  
+            onChange={(e) => model.source = e.target.value ?? ''}
+            multiline
+            fullWidth
           />
         )}
-      </div>
+      </Box>
 
-      <div className="editor-logs" style={{
+      <Box sx={{
         display: state.view.logs ? 'block' : 'none',
         overflowY: 'auto',
         maxHeight: '200px',
-        backgroundColor: 'var(--surface-card)',
-        borderTop: '1px solid var(--surface-border)',
+        backgroundColor: 'background.paper',
+        borderTop: 1,
+        borderColor: 'divider',
         flexShrink: 0,
-        padding: '8px',
+        p: 1,
         fontSize: '12px',
         fontFamily: 'monospace'
       }}>
         {(state.currentRunLogs ?? []).map(([type, text], i) => (
-          <pre key={i}>{text}</pre>
+          <pre key={i} style={{ margin: 0 }}>{text}</pre>
         ))}
-      </div>
+      </Box>
     
-    </div>
+    </Box>
   )
 }
