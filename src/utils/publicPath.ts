@@ -34,8 +34,20 @@ function getDocumentBase(): string | undefined {
   return undefined;
 }
 
+// For web worker context - derive base URL from worker's own location
+function getWorkerBase(): string | undefined {
+  // Check if we're in a worker context (no document, but self.location exists)
+  if (typeof document === 'undefined' && typeof self !== 'undefined' && self.location) {
+    const workerUrl = new URL(self.location.href);
+    let basePath = workerUrl.pathname.replace(/\/[^/]*$/, '/'); // Remove filename
+    basePath = basePath.replace(/\/assets\/$/, '/'); // Remove /assets/ if present
+    return `${workerUrl.origin}${basePath}`;
+  }
+  return undefined;
+}
+
 function resolveBaseUrl(): string {
-  return getGlobalBase() ?? getImportMetaBase() ?? getDocumentBase() ?? '/';
+  return getGlobalBase() ?? getImportMetaBase() ?? getWorkerBase() ?? getDocumentBase() ?? '/';
 }
 
 function trimTrailingSlash(value: string): string {
@@ -49,8 +61,16 @@ function trimLeadingSlash(value: string): string {
 export function resolvePublicPath(path: string): string {
   const baseUrl = resolveBaseUrl();
   if (!path) return baseUrl;
-  const normalizedBase = baseUrl === '/' ? '' : trimTrailingSlash(baseUrl);
+  
   const normalizedPath = trimLeadingSlash(path);
+  
+  // If baseUrl is a full URL (from worker context), use URL constructor
+  if (baseUrl.startsWith('http://') || baseUrl.startsWith('https://')) {
+    return new URL(normalizedPath, baseUrl).toString();
+  }
+  
+  // Otherwise, simple string concatenation for path-based bases
+  const normalizedBase = baseUrl === '/' ? '' : trimTrailingSlash(baseUrl);
   return `${normalizedBase}/${normalizedPath}`;
 }
 
