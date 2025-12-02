@@ -15,7 +15,8 @@ function getGlobalBase(): string | undefined {
 function getImportMetaBase(): string | undefined {
   if (typeof import.meta !== 'undefined' && (import.meta as any).env) {
     const base = (import.meta as any).env.BASE_URL;
-    if (typeof base === 'string' && base.length > 0) {
+    // Only return if it's a meaningful base path, not just "/"
+    if (typeof base === 'string' && base.length > 0 && base !== '/') {
       return base;
     }
   }
