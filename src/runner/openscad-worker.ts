@@ -13,18 +13,24 @@ declare const self: DedicatedWorkerGlobalScope;
 
 export type MergedOutputs = {stdout?: string, stderr?: string, error?: string}[];
 
-// Load BrowserFS on first use
-let browserFSLoaded = false;
-async function ensureBrowserFS() {
-  if (browserFSLoaded) return;
-  let workerBaseHref = '';
+// Compute base URL for resolving assets relative to the worker
+function getWorkerBaseUrl(): string {
   if (typeof self !== 'undefined' && self.location) {
     const workerUrl = new URL(self.location.href);
     let basePath = workerUrl.pathname.replace(/\/[^/]*$/, '/');
     basePath = basePath.replace(/\/assets\/$/, '/');
-    workerBaseHref = `${workerUrl.origin}${basePath}`;
+    return `${workerUrl.origin}${basePath}`;
   }
-  const browserFSUrl = new URL('browserfs.min.js', workerBaseHref || '/').toString();
+  return '/';
+}
+
+const workerBaseUrl = getWorkerBaseUrl();
+
+// Load BrowserFS on first use
+let browserFSLoaded = false;
+async function ensureBrowserFS() {
+  if (browserFSLoaded) return;
+  const browserFSUrl = new URL('browserfs.min.js', workerBaseUrl).toString();
   const browserFSCode = await fetch(browserFSUrl).then(r => r.text());
   (0, eval)(browserFSCode);
   browserFSLoaded = true;
@@ -49,6 +55,13 @@ self.addEventListener('message', async (e: MessageEvent<OpenSCADInvocation>) => 
   try {
     instance = await OpenSCAD({
       noInitialRun: true,
+      locateFile: (path: string) => {
+        // Resolve wasm and other files relative to the worker's base URL
+        if (path.endsWith('.wasm')) {
+          return new URL(`wasm/${path}`, workerBaseUrl).toString();
+        }
+        return new URL(path, workerBaseUrl).toString();
+      },
       'print': (text: string) => {
         console.debug('stdout: ' + text);
         callback({stdout: text})
