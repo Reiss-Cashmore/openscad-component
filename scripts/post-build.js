@@ -60,21 +60,30 @@ try {
 
 // Copy built worker and its dependencies to public for demo app
 try {
-  const { readdirSync } = await import('fs');
+  const { readdirSync, rmSync } = await import('fs');
+  const publicDir = resolve(__dirname, '../public');
+  const distDir = resolve(__dirname, '../dist');
+  const chunkPattern = /^(filesystem|utils|zip-archives)-[\w-]+\.js$/;
   
   // Copy worker
   copyFileSync(
-    resolve(__dirname, '../dist/openscad-worker.js'),
-    resolve(__dirname, '../public/openscad-worker.js')
+    resolve(distDir, 'openscad-worker.js'),
+    resolve(publicDir, 'openscad-worker.js')
   );
   
-  // Copy all chunk files that the worker might need (filesystem, utils, zip-archives)
-  const distFiles = readdirSync(resolve(__dirname, '../dist'));
-  for (const file of distFiles) {
-    if (file.match(/^(filesystem|utils|zip-archives)-[a-zA-Z0-9]+\.js$/)) {
+  // Clean old chunks from public to avoid stale references
+  for (const file of readdirSync(publicDir)) {
+    if (chunkPattern.test(file)) {
+      rmSync(resolve(publicDir, file));
+    }
+  }
+  
+  // Copy fresh chunk files that the worker might need (filesystem, utils, zip-archives)
+  for (const file of readdirSync(distDir)) {
+    if (chunkPattern.test(file)) {
       copyFileSync(
-        resolve(__dirname, '../dist', file),
-        resolve(__dirname, '../public', file)
+        resolve(distDir, file),
+        resolve(publicDir, file)
       );
       console.log(`✓ Copied ${file} to public/`);
     }

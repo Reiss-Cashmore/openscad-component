@@ -32,15 +32,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build demo site
+      - name: Build component library
+        run: npm run build
+
+      - name: Install test app dependencies
+        run: |
+          cd test-app
+          npm ci
+
+      - name: Build test app for GitHub Pages
         env:
-          DEMO_BASE: /${{ github.event.repository.name }}/
-        run: npm run build:demo
+          TEST_APP_BASE: /${{ github.event.repository.name }}/
+        run: |
+          cd test-app
+          npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: demo/demo-dist
+          path: test-app/dist
 
   deploy:
     runs-on: ubuntu-latest

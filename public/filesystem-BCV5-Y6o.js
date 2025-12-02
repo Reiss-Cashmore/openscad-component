@@ -1,19 +1,19 @@
-function f(t, e, i) {
+function w(t, e, i) {
   const r = [];
   for (const s of Object.keys(t))
     i && !i(s) || r.push(e(s, t[s]));
   return r;
 }
-function h(t) {
+function b(t) {
   let e;
   const i = new Promise((r, s) => {
     e = t(r, s);
   });
   return Object.assign(i, { kill: e });
 }
-function S(t, e) {
+function D(t, e) {
   let i, r;
-  return (...s) => ({ now: n }) => h((o, a) => {
+  return (...s) => ({ now: n }) => b((o, a) => {
     let c;
     return (async () => {
       const l = async () => {
@@ -30,26 +30,26 @@ function S(t, e) {
     })(), () => c?.kill();
   });
 }
-function y(t) {
+function E(t) {
   return t < 1024 ? `${Math.floor(t)} bytes` : (t /= 1024, t < 1024 ? `${Math.floor(t * 10) / 10} kB` : (t /= 1024, `${Math.floor(t * 10) / 10} MB`));
 }
-function C(t) {
+function L(t) {
   return t < 1e3 ? `${Math.floor(t)}ms` : `${Math.floor(t / 100) / 10}sec`;
 }
-function O() {
+function B() {
   const t = () => {
     document.documentElement.style.setProperty("--app-height", `${window.innerHeight}px`);
   };
   window.addEventListener("resize", t), t();
 }
-function w() {
+function U() {
   return !!("standalone" in window.navigator && window.navigator.standalone);
 }
-function A(t, e) {
+function $(t, e) {
   const i = document.createElement("a");
   i.href = t, i.setAttribute("download", e), document.body.appendChild(i), i.click(), i.parentNode?.removeChild(i);
 }
-async function D(t, { content: e, path: i, url: r }) {
+async function I(t, { content: e, path: i, url: r }) {
   const s = i.endsWith(".scad") || i.endsWith(".json");
   if (e)
     return new TextEncoder().encode(e);
@@ -67,7 +67,7 @@ async function D(t, { content: e, path: i, url: r }) {
   } else
     throw new Error("Invalid source: " + JSON.stringify({ path: i, content: e, url: r }));
 }
-function E(t) {
+function k(t) {
   return new Promise((e, i) => {
     const r = new FileReader();
     r.onloadend = () => {
@@ -75,7 +75,7 @@ function E(t) {
     }, r.onerror = i, r.readAsDataURL(t);
   });
 }
-const p = {
+const u = {
   fonts: {},
   openscad: {
     description: "OpenSCAD",
@@ -277,15 +277,32 @@ const p = {
       include: [{ glob: ["**/*.scad", "LICENSE"] }]
     }
   }
-}, u = Object.entries(p).filter(([t, { deployed: e }]) => e == null || e).map(([t]) => t), L = (t) => {
+}, m = Object.entries(u).filter(([t, { deployed: e }]) => e == null || e).map(([t]) => t), g = { BASE_URL: "/", DEV: !1, MODE: "production", PROD: !0, SSR: !1 }, p = typeof import.meta < "u" && g && "/" || "/";
+function f(t) {
+  return t.endsWith("/") ? t.slice(0, -1) : t;
+}
+function h(t) {
+  return t.startsWith("/") ? t.slice(1) : t;
+}
+function S(t) {
+  if (!t) return p;
+  const e = p === "/" ? "" : f(p), i = h(t);
+  return `${e}/${i}`;
+}
+function y(t) {
+  return S(`libraries/${h(t)}`);
+}
+const N = (t) => {
   let e = t.split("/").slice(0, -1).join("/");
   return e === "" ? t.startsWith("/") ? "/" : "." : e;
 };
-function m(t, e) {
-  return t === "." ? e : t.endsWith("/") ? m(t.substring(0, t.length - 1), e) : e === "." ? t : `${t}/${e}`;
+function C(t, e) {
+  return t === "." ? e : t.endsWith("/") ? C(t.substring(0, t.length - 1), e) : e === "." ? t : `${t}/${e}`;
 }
-async function b(t) {
-  const e = BrowserFS.BFSRequire("buffer").Buffer, i = async (n) => (await fetch(n)).arrayBuffer(), r = await Promise.all(t.map(async (n) => [n, await i(`/libraries/${n}.zip`)])), s = {};
+async function O(t) {
+  const e = BrowserFS.BFSRequire("buffer").Buffer, i = async (n) => (await fetch(n)).arrayBuffer(), r = await Promise.all(
+    t.map(async (n) => [n, await i(y(`${n}.zip`))])
+  ), s = {};
   for (const [n, o] of r)
     s[n] = {
       fs: "ZipFS",
@@ -295,7 +312,7 @@ async function b(t) {
     };
   return s;
 }
-async function B(t, e, i = "/libraries", r = "/tmp") {
+async function _(t, e, i = "/libraries", r = "/tmp") {
   const s = async (n, o) => {
     try {
       await e.symlink(n, o);
@@ -304,8 +321,8 @@ async function B(t, e, i = "/libraries", r = "/tmp") {
     }
   };
   await Promise.all(t.map((n) => (async () => {
-    if (!(n in p)) throw new Error(`Archive named ${n} invalid (valid ones: ${u.join(", ")})`);
-    const { symlinks: o } = p[n];
+    if (!(n in u)) throw new Error(`Archive named ${n} invalid (valid ones: ${m.join(", ")})`);
+    const { symlinks: o } = u[n];
     if (o)
       for (const a in o) {
         const c = o[a], l = c === "." ? `${i}/${n}` : `${i}/${n}/${c}`, d = a.startsWith("/") ? a : `${r}/${a}`;
@@ -315,7 +332,7 @@ async function B(t, e, i = "/libraries", r = "/tmp") {
       await s(`${i}/${n}`, `${r}/${n}`);
   })()));
 }
-function g(t, e) {
+function A(t, e) {
   return new Promise(async (i, r) => {
     BrowserFS.install(t);
     try {
@@ -327,11 +344,11 @@ function g(t, e) {
     }
   });
 }
-async function U({ prefix: t, allowPersistence: e }) {
-  const r = await b(u), s = {};
+async function P({ prefix: t, allowPersistence: e }) {
+  const r = await O(m), s = {};
   for (const o in r)
     s[`${t}${o}`] = r[o];
-  await g(typeof window == "object" && window || self, {
+  await A(typeof window == "object" && window || self, {
     fs: "OverlayFS",
     options: {
       readable: {
@@ -349,21 +366,21 @@ async function U({ prefix: t, allowPersistence: e }) {
   return n;
 }
 export {
-  h as A,
-  y as a,
-  C as b,
-  O as c,
-  A as d,
-  U as e,
-  D as f,
-  L as g,
-  u as h,
-  w as i,
-  m as j,
-  f as m,
-  E as r,
-  B as s,
-  S as t,
-  p as z
+  b as A,
+  E as a,
+  L as b,
+  B as c,
+  $ as d,
+  P as e,
+  I as f,
+  N as g,
+  m as h,
+  U as i,
+  C as j,
+  w as m,
+  k as r,
+  _ as s,
+  D as t,
+  u as z
 };
-//# sourceMappingURL=filesystem-BxKQuVe6.js.map
+//# sourceMappingURL=filesystem-BCV5-Y6o.js.map

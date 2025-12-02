@@ -1,6 +1,7 @@
 // Portions of this file are Copyright 2021 Google LLC, and licensed under GPL2+. See COPYING.
 
 import { deployedArchiveNames, zipArchives } from "./zip-archives";
+import { resolveLibrariesAsset } from "../utils/publicPath";
 
 declare var BrowserFS: BrowserFSInterface
 
@@ -25,7 +26,9 @@ export async function getBrowserFSLibrariesMounts(archiveNames: string[]) {
   const Buffer = BrowserFS.BFSRequire('buffer').Buffer;
   const fetchData = async (url: string) => (await fetch(url)).arrayBuffer();
   const results: [string, ArrayBuffer][] =
-    await Promise.all(archiveNames.map(async (n: string) => [n, await fetchData(`/libraries/${n}.zip`)]));
+    await Promise.all(
+      archiveNames.map(async (n: string) => [n, await fetchData(resolveLibrariesAsset(`${n}.zip`))])
+    );
   
   const zipMounts: FSMounts = {};
   for (const [n, zipData] of results) {
