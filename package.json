@@ -74,6 +74,10 @@
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/npm": "^12.0.2",
     "@types/chroma-js": "^2.4.5",
     "@types/debug": "^4.1.12",
     "@types/node": "^22.10.2",
@@ -82,7 +86,9 @@
     "@types/uzip": "^0.20201231.2",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/ui": "^2.0.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "jsdom": "^27.0.1",
+    "semantic-release": "^24.2.9",
     "tsx": "^4.19.2",
     "typescript": "^5.9.2",
     "vite": "^6.0.0",

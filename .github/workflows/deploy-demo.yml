@@ -37,6 +37,9 @@ jobs:
 
       - name: Copy built assets to test-app
         run: |
+          # Remove old filesystem chunks from test-app to avoid stale files
+          rm -f test-app/public/filesystem-*.js
+          # Copy fresh assets from build
           cp public/openscad-worker.js test-app/public/
           cp public/filesystem-*.js test-app/public/ || true
 

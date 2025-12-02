@@ -35,13 +35,18 @@ difference() {
 }
 
 // Roof
-translate([0, 0, 10])
+translate([-10, 0, 14])
+  rotate([0, -45, 0])
+    cube([30, 30, 2], center=true);
+
+translate([10, 0, 14])
   rotate([0, 45, 0])
-    cube([35, 30, 2], center=true);
+    cube([30, 30, 2], center=true);
 
 // Chimney
 translate([10, 0, 15])
   cube([4, 4, 8]);
+
 `
           }}
           layout="multi"
