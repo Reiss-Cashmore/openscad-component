@@ -2,7 +2,7 @@
 
 import React, { CSSProperties, useContext } from 'react';
 import { ModelContext } from './contexts.ts';
-import * as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { Button, LinearProgress, Badge, Box, Snackbar } from '@mui/material';
 import { FlashOn as FlashOnIcon, FormatAlignLeft as FormatAlignLeftIcon } from '@mui/icons-material';
 import HelpMenu from './HelpMenu.tsx';
