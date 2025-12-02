@@ -35,6 +35,11 @@ jobs:
       - name: Build component library
         run: npm run build
 
+      - name: Copy built assets to test-app
+        run: |
+          cp public/openscad-worker.js test-app/public/
+          cp public/filesystem-*.js test-app/public/ || true
+
       - name: Install test app dependencies
         run: |
           cd test-app
