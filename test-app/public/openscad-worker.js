@@ -1,22 +1,22 @@
-import { e as fo, s as co, h as lo, f as vo } from "./filesystem-BxKQuVe6.js";
+import { e as fo, s as co, h as lo, f as vo } from "./filesystem-683jcLN5.js";
 var ho = (() => {
-  var K = import.meta.url;
-  return (function(rr = {}) {
-    var c = typeof rr < "u" ? rr : {}, dr, ar;
+  var q = import.meta.url;
+  return (function(tr = {}) {
+    var c = typeof tr < "u" ? tr : {}, Y, W;
     c.ready = new Promise(function(r, e) {
-      dr = r, ar = e;
+      Y = r, W = e;
     });
-    var $ = Object.assign({}, c), j = [], sr = "./this.program", G = (r, e) => {
+    var Q = Object.assign({}, c), j = [], ur = "./this.program", V = (r, e) => {
       throw e;
-    }, br = typeof window == "object", X = typeof importScripts == "function", Z = typeof process == "object" && typeof process.versions == "object" && typeof process.versions.node == "string", H = "";
+    }, br = typeof window == "object", K = typeof importScripts == "function", J = typeof process == "object" && typeof process.versions == "object" && typeof process.versions.node == "string", H = "";
     function F(r) {
       return c.locateFile ? c.locateFile(r, H) : H + r;
     }
     var U, Sr, Yr;
-    (br || X) && (X ? H = self.location.href : typeof document < "u" && document.currentScript && (H = document.currentScript.src), K && (H = K), H.indexOf("blob:") !== 0 ? H = H.substr(0, H.replace(/[?#].*/, "").lastIndexOf("/") + 1) : H = "", U = (r) => {
+    (br || K) && (K ? H = self.location.href : typeof document < "u" && document.currentScript && (H = document.currentScript.src), q && (H = q), H.indexOf("blob:") !== 0 ? H = H.substr(0, H.replace(/[?#].*/, "").lastIndexOf("/") + 1) : H = "", U = (r) => {
       var e = new XMLHttpRequest();
       return e.open("GET", r, !1), e.send(null), e.responseText;
-    }, X && (Yr = (r) => {
+    }, K && (Yr = (r) => {
       var e = new XMLHttpRequest();
       return e.open("GET", r, !1), e.responseType = "arraybuffer", e.send(null), new Uint8Array(e.response);
     }), Sr = (r, e, t) => {
@@ -29,18 +29,18 @@ var ho = (() => {
         t();
       }, n.onerror = t, n.send(null);
     });
-    var Dr = c.print || console.log.bind(console), Q = c.printErr || console.warn.bind(console);
-    Object.assign(c, $), $ = null, c.arguments && (j = c.arguments), c.thisProgram && (sr = c.thisProgram), c.quit && (G = c.quit);
+    var Dr = c.print || console.log.bind(console), rr = c.printErr || console.warn.bind(console);
+    Object.assign(c, Q), Q = null, c.arguments && (j = c.arguments), c.thisProgram && (ur = c.thisProgram), c.quit && (V = c.quit);
     var vr;
     c.wasmBinary && (vr = c.wasmBinary);
     var qe = c.noExitRuntime || !1;
-    typeof WebAssembly != "object" && Y("no native wasm support detected");
+    typeof WebAssembly != "object" && G("no native wasm support detected");
     var Ar, hr = !1, Or;
     function Wr(r, e) {
-      r || Y(e);
+      r || G(e);
     }
     var $r = typeof TextDecoder < "u" ? new TextDecoder("utf8") : void 0;
-    function ur(r, e, t) {
+    function fr(r, e, t) {
       e >>>= 0;
       for (var n = e + t, i = e; r[i] && !(i >= n); ) ++i;
       if (i - e > 16 && r.buffer && $r)
@@ -66,8 +66,8 @@ var ho = (() => {
       }
       return a;
     }
-    function er(r, e) {
-      return r >>>= 0, r ? ur(J, r, e) : "";
+    function nr(r, e) {
+      return r >>>= 0, r ? fr(er, r, e) : "";
     }
     function _r(r, e, t, n) {
       if (t >>>= 0, !(n > 0)) return 0;
@@ -94,19 +94,19 @@ var ho = (() => {
       return e[t >>> 0] = 0, t - i;
     }
     function Nr(r, e, t) {
-      return _r(r, J, e, t);
+      return _r(r, er, e, t);
     }
-    function fr(r) {
+    function cr(r) {
       for (var e = 0, t = 0; t < r.length; ++t) {
         var n = r.charCodeAt(t);
         n <= 127 ? e++ : n <= 2047 ? e += 2 : n >= 55296 && n <= 57343 ? (e += 4, ++t) : e += 3;
       }
       return e;
     }
-    var L, J, q, Zr, v, O;
+    var L, er, $, Zr, v, O;
     function Qr() {
       var r = Ar.buffer;
-      c.HEAP8 = L = new Int8Array(r), c.HEAP16 = q = new Int16Array(r), c.HEAP32 = v = new Int32Array(r), c.HEAPU8 = J = new Uint8Array(r), c.HEAPU16 = Zr = new Uint16Array(r), c.HEAPU32 = O = new Uint32Array(r), c.HEAPF32 = new Float32Array(r), c.HEAPF64 = new Float64Array(r);
+      c.HEAP8 = L = new Int8Array(r), c.HEAP16 = $ = new Int16Array(r), c.HEAP32 = v = new Int32Array(r), c.HEAPU8 = er = new Uint8Array(r), c.HEAPU16 = Zr = new Uint16Array(r), c.HEAPU32 = O = new Uint32Array(r), c.HEAPF32 = new Float32Array(r), c.HEAPF64 = new Float64Array(r);
     }
     var mr, Jr = [], re = [], Ve = [], Ke = [], ee = [], $e = 0;
     function te() {
@@ -142,23 +142,23 @@ var ho = (() => {
     function it(r) {
       ee.unshift(r);
     }
-    var tr = 0, pr = null;
+    var ir = 0, pr = null;
     function mo(r) {
       return r;
     }
     function Gr(r) {
-      tr++, c.monitorRunDependencies && c.monitorRunDependencies(tr);
+      ir++, c.monitorRunDependencies && c.monitorRunDependencies(ir);
     }
     function Mr(r) {
-      if (tr--, c.monitorRunDependencies && c.monitorRunDependencies(tr), tr == 0 && pr) {
+      if (ir--, c.monitorRunDependencies && c.monitorRunDependencies(ir), ir == 0 && pr) {
         var e = pr;
         pr = null, e();
       }
     }
-    function Y(r) {
-      c.onAbort && c.onAbort(r), r = "Aborted(" + r + ")", Q(r), hr = !0, Or = 1, r += ". Build with -sASSERTIONS for more info.";
+    function G(r) {
+      c.onAbort && c.onAbort(r), r = "Aborted(" + r + ")", rr(r), hr = !0, Or = 1, r += ". Build with -sASSERTIONS for more info.";
       var e = new WebAssembly.RuntimeError(r);
-      throw ar(e), e;
+      throw W(e), e;
     }
     var ot = "data:application/octet-stream;base64,";
     function ne(r) {
@@ -175,7 +175,7 @@ var ho = (() => {
         } catch (e) {
           if (hr || wr > 1 || e === 1 / 0 || e === "unwind")
             throw e;
-          Y("unhandled exception: " + [e, e.stack]);
+          G("unhandled exception: " + [e, e.stack]);
         } finally {
           wr -= 1;
         }
@@ -196,21 +196,21 @@ var ho = (() => {
         return (!i || i.func !== n) && (i = e[t] = { func: n, wrapper: ie(n) }), i.wrapper;
       };
     }
-    var nr;
-    c.locateFile ? (nr = "openscad.wasm", ne(nr) || (nr = F(nr))) : nr = new URL("/wasm/openscad.wasm", import.meta.url).href;
+    var or;
+    c.locateFile ? (or = "openscad.wasm", ne(or) || (or = F(or))) : or = new URL("/wasm/openscad.wasm", import.meta.url).href;
     function oe(r) {
       try {
-        if (r == nr && vr)
+        if (r == or && vr)
           return new Uint8Array(vr);
         if (Yr)
           return Yr(r);
         throw "both async and sync fetching of the wasm failed";
       } catch (e) {
-        Y(e);
+        G(e);
       }
     }
     function ut(r) {
-      return !vr && (br || X) && typeof fetch == "function" ? fetch(r, { credentials: "same-origin" }).then(function(e) {
+      return !vr && (br || K) && typeof fetch == "function" ? fetch(r, { credentials: "same-origin" }).then(function(e) {
         if (!e.ok)
           throw "failed to load wasm binary file at '" + r + "'";
         return e.arrayBuffer();
@@ -226,14 +226,14 @@ var ho = (() => {
       }).then(function(n) {
         return n;
       }).then(t, function(n) {
-        Q("failed to asynchronously prepare wasm: " + n), Y(n);
+        rr("failed to asynchronously prepare wasm: " + n), G(n);
       });
     }
     function ft(r, e, t, n) {
       return !r && typeof WebAssembly.instantiateStreaming == "function" && !ne(e) && typeof fetch == "function" ? fetch(e, { credentials: "same-origin" }).then(function(i) {
         var a = WebAssembly.instantiateStreaming(i, t);
         return a.then(n, function(s) {
-          return Q("wasm streaming compile failed: " + s), Q("falling back to ArrayBuffer instantiation"), ae(e, t, n);
+          return rr("wasm streaming compile failed: " + s), rr("falling back to ArrayBuffer instantiation"), ae(e, t, n);
         });
       }) : ae(e, t, n);
     }
@@ -251,9 +251,9 @@ var ho = (() => {
         try {
           return c.instantiateWasm(r, e);
         } catch (n) {
-          Q("Module.instantiateWasm callback failed with error: " + n), ar(n);
+          rr("Module.instantiateWasm callback failed with error: " + n), W(n);
         }
-      return ft(vr, nr, r, t).catch(ar), {};
+      return ft(vr, or, r, t).catch(W), {};
     }
     var D, P;
     function se(r) {
@@ -264,7 +264,7 @@ var ho = (() => {
         r.shift()(c);
     }
     function lt(r, e, t, n) {
-      Y("Assertion failed: " + er(r) + ", at: " + [e ? er(e) : "unknown filename", t, n ? er(n) : "unknown function"]);
+      G("Assertion failed: " + nr(r) + ", at: " + [e ? nr(e) : "unknown filename", t, n ? nr(n) : "unknown function"]);
     }
     var Fr = [];
     function k(r) {
@@ -274,19 +274,19 @@ var ho = (() => {
     function dt(r, e) {
       k(r)(e);
     }
-    var ir = [];
+    var ar = [];
     function ue(r) {
       r.add_ref();
     }
     var Tr = 0;
     function vt(r) {
       var e = new Rr(r);
-      return e.get_caught() || (e.set_caught(!0), Tr--), e.set_rethrown(!1), ir.push(e), ue(e), e.get_exception_ptr();
+      return e.get_caught() || (e.set_caught(!0), Tr--), e.set_rethrown(!1), ar.push(e), ue(e), e.get_exception_ptr();
     }
     function ht() {
-      if (!ir.length)
+      if (!ar.length)
         return 0;
-      var r = ir[ir.length - 1];
+      var r = ar[ar.length - 1];
       return ue(r), r.excPtr;
     }
     function fe(r) {
@@ -337,17 +337,17 @@ var ho = (() => {
     function _t(r) {
       r && fe(new Rr(r));
     }
-    var cr = 0;
+    var lr = 0;
     function mt() {
       w(0);
-      var r = ir.pop();
-      fe(r), cr = 0;
+      var r = ar.pop();
+      fe(r), lr = 0;
     }
     function pt(r) {
-      throw cr || (cr = r), r;
+      throw lr || (lr = r), r;
     }
     function Cr() {
-      var r = cr;
+      var r = lr;
       if (!r)
         return kr(0), 0;
       var e = new Rr(r);
@@ -367,14 +367,14 @@ var ho = (() => {
     }
     var wt = Cr, yt = Cr, Et = Cr, gt = Cr;
     function kt() {
-      var r = ir.pop();
-      r || Y("no exception to throw");
+      var r = ar.pop();
+      r || G("no exception to throw");
       var e = r.excPtr;
-      throw r.get_rethrown() || (ir.push(r), r.set_rethrown(!0), r.set_caught(!1), Tr++), cr = e, e;
+      throw r.get_rethrown() || (ar.push(r), r.set_rethrown(!0), r.set_caught(!1), Tr++), lr = e, e;
     }
     function bt(r, e, t) {
       var n = new Rr(r);
-      throw n.init(e, t), cr = r, Tr++, r;
+      throw n.init(e, t), lr = r, Tr++, r;
     }
     function St() {
       return Tr;
@@ -410,9 +410,9 @@ var ho = (() => {
       if (typeof crypto == "object" && typeof crypto.getRandomValues == "function") {
         var r = new Uint8Array(1);
         return () => (crypto.getRandomValues(r), r[0]);
-      } else return () => Y("randomDevice");
+      } else return () => G("randomDevice");
     }
-    var V = { resolve: function() {
+    var Z = { resolve: function() {
       for (var r = "", e = !1, t = arguments.length - 1; t >= -1 && !e; t--) {
         var n = t >= 0 ? arguments[t] : o.cwd();
         if (typeof n != "string")
@@ -423,7 +423,7 @@ var ho = (() => {
       }
       return r = M.normalizeArray(r.split("/").filter((i) => !!i), !e).join("/"), (e ? "/" : "") + r || ".";
     }, relative: (r, e) => {
-      r = V.resolve(r).substr(1), e = V.resolve(e).substr(1);
+      r = Z.resolve(r).substr(1), e = Z.resolve(e).substr(1);
       function t(l) {
         for (var d = 0; d < l.length && l[d] === ""; d++)
           ;
@@ -441,15 +441,15 @@ var ho = (() => {
       return f = f.concat(i.slice(s)), f.join("/");
     } };
     function Pr(r, e, t) {
-      var n = fr(r) + 1, i = new Array(n), a = _r(r, i, 0, i.length);
+      var n = cr(r) + 1, i = new Array(n), a = _r(r, i, 0, i.length);
       return e && (i.length = a), i;
     }
-    var or = { ttys: [], init: function() {
+    var sr = { ttys: [], init: function() {
     }, shutdown: function() {
     }, register: function(r, e) {
-      or.ttys[r] = { input: [], output: [], ops: e }, o.registerDevice(r, or.stream_ops);
+      sr.ttys[r] = { input: [], output: [], ops: e }, o.registerDevice(r, sr.stream_ops);
     }, stream_ops: { open: function(r) {
-      var e = or.ttys[r.node.rdev];
+      var e = sr.ttys[r.node.rdev];
       if (!e)
         throw new o.ErrnoError(43);
       r.tty = e, r.seekable = !1;
@@ -494,16 +494,16 @@ var ho = (() => {
       }
       return r.input.shift();
     }, put_char: function(r, e) {
-      e === null || e === 10 ? (Dr(ur(r.output, 0)), r.output = []) : e != 0 && r.output.push(e);
+      e === null || e === 10 ? (Dr(fr(r.output, 0)), r.output = []) : e != 0 && r.output.push(e);
     }, fsync: function(r) {
-      r.output && r.output.length > 0 && (Dr(ur(r.output, 0)), r.output = []);
+      r.output && r.output.length > 0 && (Dr(fr(r.output, 0)), r.output = []);
     } }, default_tty1_ops: { put_char: function(r, e) {
-      e === null || e === 10 ? (Q(ur(r.output, 0)), r.output = []) : e != 0 && r.output.push(e);
+      e === null || e === 10 ? (rr(fr(r.output, 0)), r.output = []) : e != 0 && r.output.push(e);
     }, fsync: function(r) {
-      r.output && r.output.length > 0 && (Q(ur(r.output, 0)), r.output = []);
+      r.output && r.output.length > 0 && (rr(fr(r.output, 0)), r.output = []);
     } } };
     function Xr(r, e) {
-      return J.fill(0, r, r + e), r;
+      return er.fill(0, r, r + e), r;
     }
     function At(r, e) {
       return Math.ceil(r / e) * e;
@@ -640,7 +640,7 @@ var ho = (() => {
       }), i && Gr();
     }
     var o = { root: null, mounts: [], devices: {}, streams: [], nextInode: 1, nameTable: null, currentPath: "/", initialized: !1, ignorePermissions: !0, ErrnoError: null, genericErrors: {}, filesystems: null, syncFSRequests: 0, lookupPath: (r, e = {}) => {
-      if (r = V.resolve(r), !r) return { path: "", node: null };
+      if (r = Z.resolve(r), !r) return { path: "", node: null };
       var t = { follow_mount: !0, recurse_count: 0 };
       if (e = Object.assign(t, e), e.recurse_count > 8)
         throw new o.ErrnoError(32);
@@ -651,7 +651,7 @@ var ho = (() => {
         if (i = o.lookupNode(i, n[s]), a = M.join2(a, n[s]), o.isMountpoint(i) && (!u || u && e.follow_mount) && (i = i.mounted.root), !u || e.follow)
           for (var f = 0; o.isLink(i.mode); ) {
             var l = o.readlink(a);
-            a = V.resolve(M.dirname(a), l);
+            a = Z.resolve(M.dirname(a), l);
             var d = o.lookupPath(a, { recurse_count: e.recurse_count + 1 });
             if (i = d.node, f++ > 40)
               throw new o.ErrnoError(32);
@@ -781,7 +781,7 @@ var ho = (() => {
       }
       return e;
     }, syncfs: (r, e) => {
-      typeof r == "function" && (e = r, r = !1), o.syncFSRequests++, o.syncFSRequests > 1 && Q("warning: " + o.syncFSRequests + " FS.syncfs operations in flight at once, probably just doing extra work");
+      typeof r == "function" && (e = r, r = !1), o.syncFSRequests++, o.syncFSRequests > 1 && rr("warning: " + o.syncFSRequests + " FS.syncfs operations in flight at once, probably just doing extra work");
       var t = o.getMounts(o.root.mount), n = 0;
       function i(s) {
         return o.syncFSRequests--, e(s);
@@ -843,7 +843,7 @@ var ho = (() => {
           }
         }
     }, mkdev: (r, e, t) => (typeof t > "u" && (t = e, e = 438), e |= 8192, o.mknod(r, e, t)), symlink: (r, e) => {
-      if (!V.resolve(r))
+      if (!Z.resolve(r))
         throw new o.ErrnoError(44);
       var t = o.lookupPath(e, { parent: !0 }), n = t.node;
       if (!n)
@@ -859,10 +859,10 @@ var ho = (() => {
       if (s = o.lookupPath(r, { parent: !0 }), u = s.node, s = o.lookupPath(e, { parent: !0 }), f = s.node, !u || !f) throw new o.ErrnoError(44);
       if (u.mount !== f.mount)
         throw new o.ErrnoError(75);
-      var l = o.lookupNode(u, i), d = V.relative(r, n);
+      var l = o.lookupNode(u, i), d = Z.relative(r, n);
       if (d.charAt(0) !== ".")
         throw new o.ErrnoError(28);
-      if (d = V.relative(e, t), d.charAt(0) !== ".")
+      if (d = Z.relative(e, t), d.charAt(0) !== ".")
         throw new o.ErrnoError(55);
       var m;
       try {
@@ -922,7 +922,7 @@ var ho = (() => {
         throw new o.ErrnoError(44);
       if (!t.node_ops.readlink)
         throw new o.ErrnoError(28);
-      return V.resolve(o.getPath(t.parent), t.node_ops.readlink(t));
+      return Z.resolve(o.getPath(t.parent), t.node_ops.readlink(t));
     }, stat: (r, e) => {
       var t = o.lookupPath(r, { follow: !e }), n = t.node;
       if (!n)
@@ -1112,12 +1112,12 @@ var ho = (() => {
       if (e.flags = e.flags || 0, e.encoding = e.encoding || "binary", e.encoding !== "utf8" && e.encoding !== "binary")
         throw new Error('Invalid encoding type "' + e.encoding + '"');
       var t, n = o.open(r, e.flags), i = o.stat(r), a = i.size, s = new Uint8Array(a);
-      return o.read(n, s, 0, a, 0), e.encoding === "utf8" ? t = ur(s, 0) : e.encoding === "binary" && (t = s), o.close(n), t;
+      return o.read(n, s, 0, a, 0), e.encoding === "utf8" ? t = fr(s, 0) : e.encoding === "binary" && (t = s), o.close(n), t;
     }, writeFile: (r, e, t = {}) => {
       t.flags = t.flags || 577;
       var n = o.open(r, t.flags, t.mode);
       if (typeof e == "string") {
-        var i = new Uint8Array(fr(e) + 1), a = _r(e, i, 0, i.length);
+        var i = new Uint8Array(cr(e) + 1), a = _r(e, i, 0, i.length);
         o.write(n, i, 0, a, void 0, t.canOwn);
       } else if (ArrayBuffer.isView(e))
         o.write(n, e, 0, e.byteLength, void 0, t.canOwn);
@@ -1137,7 +1137,7 @@ var ho = (() => {
     }, createDefaultDirectories: () => {
       o.mkdir("/tmp"), o.mkdir("/home"), o.mkdir("/home/web_user");
     }, createDefaultDevices: () => {
-      o.mkdir("/dev"), o.registerDevice(o.makedev(1, 3), { read: () => 0, write: (e, t, n, i, a) => i }), o.mkdev("/dev/null", o.makedev(1, 3)), or.register(o.makedev(5, 0), or.default_tty_ops), or.register(o.makedev(6, 0), or.default_tty1_ops), o.mkdev("/dev/tty", o.makedev(5, 0)), o.mkdev("/dev/tty1", o.makedev(6, 0));
+      o.mkdir("/dev"), o.registerDevice(o.makedev(1, 3), { read: () => 0, write: (e, t, n, i, a) => i }), o.mkdev("/dev/null", o.makedev(1, 3)), sr.register(o.makedev(5, 0), sr.default_tty_ops), sr.register(o.makedev(6, 0), sr.default_tty1_ops), o.mkdev("/dev/tty", o.makedev(5, 0)), o.mkdev("/dev/tty1", o.makedev(6, 0));
       var r = Dt();
       o.createDevice("/dev", "random", r), o.createDevice("/dev", "urandom", r), o.mkdir("/dev/shm"), o.mkdir("/dev/shm/tmp");
     }, createSpecialDirectories: () => {
@@ -1295,7 +1295,7 @@ var ho = (() => {
           return B.chunks[C];
         }), (R || !g) && (h = g = 1, g = this.getter(0).length, h = g, Dr("LazyFiles on gzip forces download of the whole file when length is accessed")), this._length = g, this._chunkSize = h, this.lengthKnown = !0;
       }, typeof XMLHttpRequest < "u") {
-        if (!X) throw "Cannot do synchronous binary XHRs outside webworkers in modern browsers. Use --embed-file or --preload-file in emcc";
+        if (!K) throw "Cannot do synchronous binary XHRs outside webworkers in modern browsers. Use --embed-file or --preload-file in emcc";
         var s = new a();
         Object.defineProperties(s, { length: { get: function() {
           return this.lengthKnown || this.cacheLength(), this._length;
@@ -1336,7 +1336,7 @@ var ho = (() => {
         return m(_, L, R, p, g), { ptr: R, allocated: !0 };
       }, f.stream_ops = l, f;
     }, createPreloadedFile: (r, e, t, n, i, a, s, u, f, l) => {
-      var d = e ? V.resolve(M.join2(r, e)) : r;
+      var d = e ? Z.resolve(M.join2(r, e)) : r;
       function m(_) {
         function p(g) {
           l && l(), u || o.createDataFile(r, e, g, n, i, f), a && a(), Mr();
@@ -1436,14 +1436,14 @@ var ho = (() => {
       if (n & 2)
         return 0;
       r >>>= 0;
-      var a = J.slice(r, r + t);
+      var a = er.slice(r, r + t);
       o.msync(e, a, i, t, n);
     }, varargs: void 0, get: function() {
       S.varargs += 4;
       var r = v[S.varargs - 4 >>> 2];
       return r;
     }, getStr: function(r) {
-      var e = er(r);
+      var e = nr(r);
       return e;
     }, getStreamFromFD: function(r) {
       var e = o.getStream(r);
@@ -1563,7 +1563,7 @@ var ho = (() => {
         }
         r.recv_queue.push({ addr: e.addr, port: e.port, data: a }), c.websocket.emit("message", r.stream.fd);
       }
-      Z ? (e.socket.on("open", n), e.socket.on("message", function(a, s) {
+      J ? (e.socket.on("open", n), e.socket.on("message", function(a, s) {
         s && i(new Uint8Array(a).buffer);
       }), e.socket.on("close", function() {
         c.websocket.emit("close", r.stream.fd);
@@ -1628,7 +1628,7 @@ var ho = (() => {
       var i = x.websocket_sock_ops.createPeer(r, e, t);
       throw r.daddr = i.addr, r.dport = i.port, new o.ErrnoError(26);
     }, listen: function(r, e) {
-      if (!Z)
+      if (!J)
         throw new o.ErrnoError(138);
     }, accept: function(r) {
       if (!r.server || !r.pending.length)
@@ -1724,7 +1724,7 @@ var ho = (() => {
       return e;
     }
     function Tt(r, e) {
-      var t = q[r >>> 1], n = Vr(Zr[r + 2 >>> 1]), i;
+      var t = $[r >>> 1], n = Vr(Zr[r + 2 >>> 1]), i;
       switch (t) {
         case 2:
           if (e !== 16)
@@ -1770,26 +1770,26 @@ var ho = (() => {
           s[t + n] = e[t];
       return [s[1] << 16 | s[0], s[3] << 16 | s[2], s[5] << 16 | s[4], s[7] << 16 | s[6]];
     }
-    var W = { address_map: { id: 1, addrs: {}, names: {} }, lookup_name: function(r) {
+    var X = { address_map: { id: 1, addrs: {}, names: {} }, lookup_name: function(r) {
       var e = qr(r);
       if (e !== null || (e = ve(r), e !== null))
         return r;
       var t;
-      if (W.address_map.addrs[r])
-        t = W.address_map.addrs[r];
+      if (X.address_map.addrs[r])
+        t = X.address_map.addrs[r];
       else {
-        var n = W.address_map.id++;
-        Wr(n < 65535, "exceeded max address mappings of 65535"), t = "172.29." + (n & 255) + "." + (n & 65280), W.address_map.names[t] = r, W.address_map.addrs[r] = t;
+        var n = X.address_map.id++;
+        Wr(n < 65535, "exceeded max address mappings of 65535"), t = "172.29." + (n & 255) + "." + (n & 65280), X.address_map.names[t] = r, X.address_map.addrs[r] = t;
       }
       return t;
     }, lookup_addr: function(r) {
-      return W.address_map.names[r] ? W.address_map.names[r] : null;
+      return X.address_map.names[r] ? X.address_map.names[r] : null;
     } };
     function he(r, e, t) {
       if (t && r === 0) return null;
       var n = Tt(r, e);
       if (n.errno) throw new o.ErrnoError(n.errno);
-      return n.addr = W.lookup_addr(n.addr) || n.addr, n;
+      return n.addr = X.lookup_addr(n.addr) || n.addr, n;
     }
     function Rt(r, e, t) {
       try {
@@ -1845,7 +1845,7 @@ var ho = (() => {
           }
           case 5: {
             var i = S.get(), s = 0;
-            return q[i + s >>> 1] = 2, 0;
+            return $[i + s >>> 1] = 2, 0;
           }
           case 6:
           case 7:
@@ -1892,7 +1892,7 @@ var ho = (() => {
     function Bt(r, e) {
       try {
         if (e === 0) return -28;
-        var t = o.cwd(), n = fr(t) + 1;
+        var t = o.cwd(), n = cr(t) + 1;
         return e < n ? -68 : (Nr(t, r, e), n);
       } catch (i) {
         if (typeof o > "u" || i.name !== "ErrnoError") throw i;
@@ -1914,7 +1914,7 @@ var ho = (() => {
             var _ = o.lookupNode(n.node, d);
             f = _.id, l = o.isChrdev(_.mode) ? 2 : o.isDir(_.mode) ? 4 : o.isLink(_.mode) ? 10 : 8;
           }
-          P = [f >>> 0, (D = f, +Math.abs(D) >= 1 ? D > 0 ? (Math.min(+Math.floor(D / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((D - +(~~D >>> 0)) / 4294967296) >>> 0 : 0)], v[e + a >>> 2] = P[0], v[e + a + 4 >>> 2] = P[1], P = [(u + 1) * i >>> 0, (D = (u + 1) * i, +Math.abs(D) >= 1 ? D > 0 ? (Math.min(+Math.floor(D / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((D - +(~~D >>> 0)) / 4294967296) >>> 0 : 0)], v[e + a + 8 >>> 2] = P[0], v[e + a + 12 >>> 2] = P[1], q[e + a + 16 >>> 1] = 280, L[e + a + 18 >>> 0] = l, Nr(d, e + a + 19, 256), a += i, u += 1;
+          P = [f >>> 0, (D = f, +Math.abs(D) >= 1 ? D > 0 ? (Math.min(+Math.floor(D / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((D - +(~~D >>> 0)) / 4294967296) >>> 0 : 0)], v[e + a >>> 2] = P[0], v[e + a + 4 >>> 2] = P[1], P = [(u + 1) * i >>> 0, (D = (u + 1) * i, +Math.abs(D) >= 1 ? D > 0 ? (Math.min(+Math.floor(D / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((D - +(~~D >>> 0)) / 4294967296) >>> 0 : 0)], v[e + a + 8 >>> 2] = P[0], v[e + a + 12 >>> 2] = P[1], $[e + a + 16 >>> 1] = 280, L[e + a + 18 >>> 0] = l, Nr(d, e + a + 19, 256), a += i, u += 1;
         }
         return o.llseek(n, u * i, 0), a;
       } catch (p) {
@@ -2009,8 +2009,8 @@ var ho = (() => {
     function qt(r, e, t) {
       try {
         for (var n = 0, i = 0; i < e; i++) {
-          var a = r + 8 * i, s = v[a >>> 2], u = q[a + 4 >>> 1], f = 32, l = o.getStream(s);
-          l && (f = S.DEFAULT_POLLMASK, l.stream_ops.poll && (f = l.stream_ops.poll(l))), f &= u | 8 | 16, f && n++, q[a + 6 >>> 1] = f;
+          var a = r + 8 * i, s = v[a >>> 2], u = $[a + 4 >>> 1], f = 32, l = o.getStream(s);
+          l && (f = S.DEFAULT_POLLMASK, l.stream_ops.poll && (f = l.stream_ops.poll(l))), f &= u | 8 | 16, f && n++, $[a + 6 >>> 1] = f;
         }
         return n;
       } catch (d) {
@@ -2021,7 +2021,7 @@ var ho = (() => {
     function Vt(r, e, t, n) {
       try {
         if (e = S.getStr(e), e = S.calculateAt(r, e), n <= 0) return -28;
-        var i = o.readlink(e), a = Math.min(n, fr(i)), s = L[t + a >>> 0];
+        var i = o.readlink(e), a = Math.min(n, cr(i)), s = L[t + a >>> 0];
         return Nr(i, t, n + 1), L[t + a >>> 0] = s, a;
       } catch (u) {
         if (typeof o > "u" || u.name !== "ErrnoError") throw u;
@@ -2031,10 +2031,10 @@ var ho = (() => {
     function Kt(r, e, t, n, i) {
       switch (e) {
         case 2:
-          t = qr(t), Xr(r, 16), i && (v[i >>> 2] = 16), q[r >>> 1] = e, v[r + 4 >>> 2] = t, q[r + 2 >>> 1] = Ur(n);
+          t = qr(t), Xr(r, 16), i && (v[i >>> 2] = 16), $[r >>> 1] = e, v[r + 4 >>> 2] = t, $[r + 2 >>> 1] = Ur(n);
           break;
         case 10:
-          t = ve(t), Xr(r, 28), i && (v[i >>> 2] = 28), v[r >>> 2] = e, v[r + 8 >>> 2] = t[0], v[r + 12 >>> 2] = t[1], v[r + 16 >>> 2] = t[2], v[r + 20 >>> 2] = t[3], q[r + 2 >>> 1] = Ur(n);
+          t = ve(t), Xr(r, 28), i && (v[i >>> 2] = 28), v[r >>> 2] = e, v[r + 8 >>> 2] = t[0], v[r + 12 >>> 2] = t[1], v[r + 16 >>> 2] = t[2], v[r + 20 >>> 2] = t[3], $[r + 2 >>> 1] = Ur(n);
           break;
         default:
           return 5;
@@ -2046,8 +2046,8 @@ var ho = (() => {
         var s = Lr(r), u = s.sock_ops.recvmsg(s, t);
         if (!u) return 0;
         if (i)
-          var f = Kt(i, s.family, W.lookup_name(u.addr), u.port, a);
-        return J.set(u.buffer, e >>> 0), u.buffer.byteLength;
+          var f = Kt(i, s.family, X.lookup_name(u.addr), u.port, a);
+        return er.set(u.buffer, e >>> 0), u.buffer.byteLength;
       } catch (l) {
         if (typeof o > "u" || l.name !== "ErrnoError") throw l;
         return -l.errno;
@@ -2105,7 +2105,7 @@ var ho = (() => {
     }
     function nn(r, e, t) {
       try {
-        return e = S.getStr(e), e = S.calculateAt(r, e), t === 0 ? o.unlink(e) : t === 512 ? o.rmdir(e) : Y("Invalid flags passed to unlinkat"), 0;
+        return e = S.getStr(e), e = S.calculateAt(r, e), t === 0 ? o.unlink(e) : t === 512 ? o.rmdir(e) : G("Invalid flags passed to unlinkat"), 0;
       } catch (n) {
         if (typeof o > "u" || n.name !== "ErrnoError") throw n;
         return -n.errno;
@@ -2170,10 +2170,10 @@ var ho = (() => {
     function _n(r) {
       if (r instanceof se || r == "unwind")
         return Or;
-      G(1, r);
+      V(1, r);
     }
     function mn(r) {
-      Or = r, te() || (c.onExit && c.onExit(r), hr = !0), G(r, new se(r));
+      Or = r, te() || (c.onExit && c.onExit(r), hr = !0), V(r, new se(r));
     }
     function me(r, e) {
       Or = r, te() || rt(), mn(r);
@@ -2181,7 +2181,7 @@ var ho = (() => {
     var pn = me, pe;
     pe = () => performance.now();
     function we(r) {
-      var e = fr(r) + 1, t = lr(e);
+      var e = cr(r) + 1, t = dr(e);
       return t && _r(r, L, t, e), t;
     }
     function wn(r, e, t) {
@@ -2195,7 +2195,7 @@ var ho = (() => {
       u < s ? (O[t >>> 2] = _, O[t + 4 >>> 2] = p) : (O[t >>> 2] = p, O[t + 4 >>> 2] = _);
     }
     function yn() {
-      Y("");
+      G("");
     }
     function En() {
       return Date.now();
@@ -2207,7 +2207,7 @@ var ho = (() => {
       return ye();
     }
     function kn(r, e, t) {
-      J.copyWithin(r >>> 0, e >>> 0, e + t >>> 0);
+      er.copyWithin(r >>> 0, e >>> 0, e + t >>> 0);
     }
     function bn(r) {
       var e = Ar.buffer;
@@ -2217,7 +2217,7 @@ var ho = (() => {
       }
     }
     function Sn(r) {
-      var e = J.length;
+      var e = er.length;
       r = r >>> 0;
       var t = ye();
       if (r > t)
@@ -2234,7 +2234,7 @@ var ho = (() => {
     }
     var jr = {};
     function Dn() {
-      return sr || "./this.program";
+      return ur || "./this.program";
     }
     function gr() {
       if (!gr.strings) {
@@ -2339,17 +2339,17 @@ var ho = (() => {
       }
     }
     function jn(r) {
-      var e = lr(20), t = lr(r.length + 1);
+      var e = dr(20), t = dr(r.length + 1);
       Nr(r, t, r.length + 1), O[e >>> 2] = t;
-      var n = lr(4);
+      var n = dr(4);
       O[n >>> 2] = 0, O[e + 4 >>> 2] = n;
       var i = 2;
       v[e + 8 >>> 2] = i, v[e + 12 >>> 2] = 4;
-      var a = lr(12);
-      return O[a >>> 2] = a + 8, O[a + 4 >>> 2] = 0, v[a + 8 >>> 2] = qr(W.lookup_name(r)), O[e + 16 >>> 2] = a, e;
+      var a = dr(12);
+      return O[a >>> 2] = a + 8, O[a + 4 >>> 2] = 0, v[a + 8 >>> 2] = qr(X.lookup_name(r)), O[e + 16 >>> 2] = a, e;
     }
     function In(r) {
-      return jn(er(r));
+      return jn(nr(r));
     }
     function Bn(r) {
       return r;
@@ -2374,7 +2374,7 @@ var ho = (() => {
       L.set(r, e >>> 0);
     }
     function Yn(r, e, t, n) {
-      var i = v[n + 40 >>> 2], a = { tm_sec: v[n >>> 2], tm_min: v[n + 4 >>> 2], tm_hour: v[n + 8 >>> 2], tm_mday: v[n + 12 >>> 2], tm_mon: v[n + 16 >>> 2], tm_year: v[n + 20 >>> 2], tm_wday: v[n + 24 >>> 2], tm_yday: v[n + 28 >>> 2], tm_isdst: v[n + 32 >>> 2], tm_gmtoff: v[n + 36 >>> 2], tm_zone: i ? er(i) : "" }, s = er(t), u = { "%c": "%a %b %d %H:%M:%S %Y", "%D": "%m/%d/%y", "%F": "%Y-%m-%d", "%h": "%b", "%r": "%I:%M:%S %p", "%R": "%H:%M", "%T": "%H:%M:%S", "%x": "%m/%d/%y", "%X": "%H:%M:%S", "%Ec": "%c", "%EC": "%C", "%Ex": "%m/%d/%y", "%EX": "%H:%M:%S", "%Ey": "%y", "%EY": "%Y", "%Od": "%d", "%Oe": "%e", "%OH": "%H", "%OI": "%I", "%Om": "%m", "%OM": "%M", "%OS": "%S", "%Ou": "%u", "%OU": "%U", "%OV": "%V", "%Ow": "%w", "%OW": "%W", "%Oy": "%y" };
+      var i = v[n + 40 >>> 2], a = { tm_sec: v[n >>> 2], tm_min: v[n + 4 >>> 2], tm_hour: v[n + 8 >>> 2], tm_mday: v[n + 12 >>> 2], tm_mon: v[n + 16 >>> 2], tm_year: v[n + 20 >>> 2], tm_wday: v[n + 24 >>> 2], tm_yday: v[n + 28 >>> 2], tm_isdst: v[n + 32 >>> 2], tm_gmtoff: v[n + 36 >>> 2], tm_zone: i ? nr(i) : "" }, s = nr(t), u = { "%c": "%a %b %d %H:%M:%S %Y", "%D": "%m/%d/%y", "%F": "%Y-%m-%d", "%h": "%b", "%r": "%I:%M:%S %p", "%R": "%H:%M", "%T": "%H:%M:%S", "%x": "%m/%d/%y", "%X": "%H:%M:%S", "%Ec": "%c", "%EC": "%C", "%Ex": "%m/%d/%y", "%EX": "%H:%M:%S", "%Ey": "%y", "%EY": "%Y", "%Od": "%d", "%Oe": "%e", "%OH": "%H", "%OI": "%I", "%Om": "%m", "%OM": "%M", "%OS": "%S", "%Ou": "%u", "%OU": "%U", "%OV": "%V", "%Ow": "%w", "%OW": "%W", "%Oy": "%y" };
       for (var f in u)
         s = s.replace(new RegExp(f, "g"), u[f]);
       var l = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], d = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -2503,7 +2503,7 @@ var ho = (() => {
       return r ? (le(52), -1) : 0;
     }
     function Xn(r) {
-      var e = fr(r) + 1, t = Kr(e);
+      var e = cr(r) + 1, t = Kr(e);
       return _r(r, L, t, e), t;
     }
     var ke = {}, be = function(r, e, t, n) {
@@ -2530,8 +2530,8 @@ var ho = (() => {
       return (De = c._main = c.asm.Eb).apply(null, arguments);
     }, Ae = function() {
       return (Ae = c.asm.Fb).apply(null, arguments);
-    }, lr = function() {
-      return (lr = c.asm.Gb).apply(null, arguments);
+    }, dr = function() {
+      return (dr = c.asm.Gb).apply(null, arguments);
     }, kr = function() {
       return (kr = c.asm.Hb).apply(null, arguments);
     }, Oe = c._fflush = function() {
@@ -3207,7 +3207,7 @@ var ho = (() => {
     };
     function Ye(r = []) {
       var e = De;
-      r.unshift(sr);
+      r.unshift(ur);
       var t = r.length, n = Kr((t + 1) * 4), i = n >> 2;
       r.forEach((s) => {
         v[i++ >>> 0] = Xn(s);
@@ -3223,10 +3223,10 @@ var ho = (() => {
       }
     }
     function We(r = j) {
-      if (tr > 0 || (Ze(), tr > 0))
+      if (ir > 0 || (Ze(), ir > 0))
         return;
       function e() {
-        Hr || (Hr = !0, c.calledRun = !0, !hr && (Qe(), Je(), dr(c), c.onRuntimeInitialized && c.onRuntimeInitialized(), Ge && Ye(r), et()));
+        Hr || (Hr = !0, c.calledRun = !0, !hr && (Qe(), Je(), Y(c), c.onRuntimeInitialized && c.onRuntimeInitialized(), Ge && Ye(r), et()));
       }
       c.setStatus ? (c.setStatus("Running..."), setTimeout(function() {
         setTimeout(function() {
@@ -3238,38 +3238,44 @@ var ho = (() => {
       for (typeof c.preInit == "function" && (c.preInit = [c.preInit]); c.preInit.length > 0; )
         c.preInit.pop()();
     var Ge = !0;
-    return c.noInitialRun && (Ge = !1), We(), rr.ready;
+    return c.noInitialRun && (Ge = !1), We(), tr.ready;
   });
 })();
 let Xe = !1;
 async function _o() {
   if (Xe) return;
-  const K = await fetch("/browserfs.min.js").then((rr) => rr.text());
-  (0, eval)(K), Xe = !0;
+  let q = "";
+  if (typeof self < "u" && self.location) {
+    const Y = new URL(self.location.href);
+    let W = Y.pathname.replace(/\/[^/]*$/, "/");
+    W = W.replace(/\/assets\/$/, "/"), q = `${Y.origin}${W}`;
+  }
+  const tr = new URL("browserfs.min.js", q || "/").toString(), c = await fetch(tr).then((Y) => Y.text());
+  (0, eval)(c), Xe = !0;
 }
-function zr(K) {
-  self.postMessage(K);
+function zr(q) {
+  self.postMessage(q);
 }
-self.addEventListener("message", async (K) => {
+self.addEventListener("message", async (q) => {
   await _o();
   const {
-    mountArchives: rr,
+    mountArchives: tr,
     inputs: c,
-    args: dr,
-    outputPaths: ar
-  } = K.data, $ = [];
+    args: Y,
+    outputPaths: W
+  } = q.data, Q = [];
   let j;
-  const sr = performance.now();
+  const ur = performance.now();
   try {
     if (j = await ho({
       noInitialRun: !0,
       print: (F) => {
-        console.debug("stdout: " + F), zr({ stdout: F }), $.push({ stdout: F });
+        console.debug("stdout: " + F), zr({ stdout: F }), Q.push({ stdout: F });
       },
       printErr: (F) => {
-        console.debug("stderr: " + F), zr({ stderr: F }), $.push({ stderr: F });
+        console.debug("stderr: " + F), zr({ stderr: F }), Q.push({ stderr: F });
       }
-    }), rr) {
+    }), tr) {
       await fo({ prefix: "", allowPersistence: !1 }), j.FS.mkdir("/libraries");
       const F = new BrowserFS.EmscriptenFS(
         j.FS,
@@ -3288,38 +3294,38 @@ self.addEventListener("message", async (K) => {
         } catch (U) {
           throw console.trace(U), new Error(`Error while trying to write ${F.path}: ${U}`);
         }
-    console.log("Invoking OpenSCAD with: ", dr);
-    let G;
+    console.log("Invoking OpenSCAD with: ", Y);
+    let V;
     try {
-      G = j.callMain(dr);
+      V = j.callMain(Y);
     } catch (F) {
       throw typeof F == "number" && j.formatException && (F = j.formatException(F)), new Error(`OpenSCAD invocation failed: ${F}`);
     }
-    const X = performance.now() - sr, Z = [];
-    for (const F of ar ?? [])
+    const K = performance.now() - ur, J = [];
+    for (const F of W ?? [])
       try {
         const U = j.FS.readFile(F);
-        Z.push([F, U]);
+        J.push([F, U]);
       } catch (U) {
         throw console.trace(U), new Error(`Failed to read output file ${F}: ${U}`);
       }
     const H = {
-      outputs: Z,
-      mergedOutputs: $,
-      exitCode: G,
-      elapsedMillis: X
+      outputs: J,
+      mergedOutputs: Q,
+      exitCode: V,
+      elapsedMillis: K
     };
     console.debug(H), zr({ result: H });
-  } catch (G) {
-    const X = performance.now() - sr;
-    console.trace(G);
-    const Z = `${G}`;
-    $.push({ error: Z }), zr({
+  } catch (V) {
+    const K = performance.now() - ur;
+    console.trace(V);
+    const J = `${V}`;
+    Q.push({ error: J }), zr({
       result: {
         exitCode: void 0,
-        error: Z,
-        mergedOutputs: $,
-        elapsedMillis: X
+        error: J,
+        mergedOutputs: Q,
+        elapsedMillis: K
       }
     });
   }
