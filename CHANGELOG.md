@@ -1,3 +1,16 @@
+## [2.2.0](https://github.com/Reiss-Cashmore/openscad-component/compare/v2.1.0...v2.2.0) (2025-12-02)
+
+### Features
+
+* **docs:** Add onParametersChange info ([93ed3ae](https://github.com/Reiss-Cashmore/openscad-component/commit/93ed3ae6089017b60df8ceacafad53d2faff039a))
+
+
+### All Commits
+- feat(docs): Add onParametersChange info (93ed3ae)
+- Fix monaco errors (af7aaf4)
+- Lock file updates (5de8fd1)
+- Type errors (ed83cc8)
+
 ## [2.1.0](https://github.com/Reiss-Cashmore/openscad-component/compare/v2.0.1...v2.1.0) (2025-12-02)
 
 ### Features
