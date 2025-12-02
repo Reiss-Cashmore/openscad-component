@@ -16,6 +16,15 @@ export type {
   Source,
   MultiLayoutComponentId
 } from './state/app-state';
+export type {
+  Parameter,
+  ParameterSet,
+  ParameterOption,
+  CustomizerValue,
+  CustomizerValues,
+  CustomizerValuePrimitive,
+  CustomizerValuesInput,
+} from './state/customizer-types';
 
 // Utilities (for advanced users)
 export { spawnOpenSCAD } from './runner/openscad-runner';

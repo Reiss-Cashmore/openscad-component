@@ -6,6 +6,7 @@ import { App } from './components/App';
 import { useOpenSCAD } from './hooks/useOpenSCAD';
 import { createInitialState } from './state/initial-state';
 import './index.css';
+import { CustomizerValues, CustomizerValuesInput, Parameter } from './state/customizer-types';
 
 export interface LibraryConfig {
   name: string;
@@ -43,6 +44,11 @@ export interface OpenSCADPlaygroundProps {
     customizer?: boolean;
   };
 
+  // Customizer bindings
+  customizerValues?: CustomizerValuesInput;
+  onCustomizerValuesChange?: (values: CustomizerValues) => void;
+  onParametersChange?: (parameters: Parameter[]) => void;
+
   // Callbacks
   onRender?: (output: any) => void;
   onExport?: (file: Blob, format: string) => void;
@@ -71,6 +77,13 @@ export function OpenSCADPlayground(props: OpenSCADPlaygroundProps) {
       initialState.params.sources = sources;
       initialState.params.activePath = sources[0].path;
     }
+  }
+
+  if (props.customizerValues) {
+    initialState.params.vars = {
+      ...(initialState.params.vars ?? {}),
+      ...props.customizerValues
+    };
   }
 
   // Apply layout preference
@@ -149,6 +162,9 @@ export function OpenSCADPlayground(props: OpenSCADPlaygroundProps) {
         initialState={initialState}
         statePersister={statePersister!}
         fs={fs}
+        customizerValues={props.customizerValues}
+        onCustomizerValuesChange={props.onCustomizerValuesChange}
+        onParametersChange={props.onParametersChange}
       />
     </div>
   );

@@ -1,8 +1,8 @@
 // Portions of this file are Copyright 2021 Google LLC, and licensed under GPL2+. See COPYING.
 
-import React, { CSSProperties, useEffect, useState } from 'react';
+import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 import {MultiLayoutComponentId, State, StatePersister} from '../state/app-state'
-import { Model } from '../state/model';
+import { Model, buildCustomizerValues } from '../state/model';
 import EditorPanel from './EditorPanel';
 import ViewerPanel from './ViewerPanel';
 import Footer from './Footer';
@@ -11,13 +11,78 @@ import PanelSwitcher from './PanelSwitcher';
 import CustomizerPanel from './CustomizerPanel';
 import { ThemeProvider, CssBaseline, Box } from '@mui/material';
 import { theme } from '../theme';
+import { CustomizerValues, CustomizerValuesInput, Parameter } from '../state/customizer-types';
 
+interface AppProps {
+  initialState: State;
+  statePersister: StatePersister;
+  fs: FS;
+  customizerValues?: CustomizerValuesInput;
+  onCustomizerValuesChange?: (values: CustomizerValues) => void;
+  onParametersChange?: (parameters: Parameter[]) => void;
+}
 
-export function App({initialState, statePersister, fs}: {initialState: State, statePersister: StatePersister, fs: FS}) {
+export function App({
+  initialState,
+  statePersister,
+  fs,
+  customizerValues,
+  onCustomizerValuesChange,
+  onParametersChange,
+}: AppProps) {
   const [state, setState] = useState(initialState);
+  const externalValuesSignatureRef = useRef<string>('');
+  const lastCustomizerValuesSignatureRef = useRef<string>('');
+  const lastParametersRef = useRef<Parameter[] | null>(null);
   
   const model = new Model(fs, state, setState, statePersister);
-  useEffect(() => model.init());
+  useEffect(() => model.init(), [model]);
+
+  useEffect(() => {
+    if (!customizerValues || Object.keys(customizerValues).length === 0) {
+      externalValuesSignatureRef.current = '';
+      return;
+    }
+    const signature = serializeSimpleMap(customizerValues);
+    if (signature === externalValuesSignatureRef.current) {
+      return;
+    }
+    externalValuesSignatureRef.current = signature;
+    model.setVars(customizerValues);
+  }, [customizerValues, model]);
+
+  useEffect(() => {
+    if (!onCustomizerValuesChange || !state.parameterSet) {
+      if (!state.parameterSet) {
+        lastCustomizerValuesSignatureRef.current = '';
+      }
+      return;
+    }
+
+    const values = buildCustomizerValues(state.parameterSet, state.params.vars);
+    const signature = serializeCustomizerValues(values);
+    if (signature === lastCustomizerValuesSignatureRef.current) {
+      return;
+    }
+    lastCustomizerValuesSignatureRef.current = signature;
+    onCustomizerValuesChange(values);
+  }, [state.parameterSet, state.params.vars, onCustomizerValuesChange]);
+
+  useEffect(() => {
+    if (!onParametersChange) {
+      return;
+    }
+    const parameters = state.parameterSet?.parameters;
+    if (!parameters) {
+      lastParametersRef.current = null;
+      return;
+    }
+    if (lastParametersRef.current === parameters) {
+      return;
+    }
+    lastParametersRef.current = parameters;
+    onParametersChange(parameters);
+  }, [state.parameterSet, onParametersChange]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -117,4 +182,18 @@ export function App({initialState, statePersister, fs}: {initialState: State, st
       </ModelContext.Provider>
     </ThemeProvider>
   );
+}
+
+function serializeSimpleMap(values: CustomizerValuesInput): string {
+  const entries = Object.keys(values)
+    .sort()
+    .map(key => [key, values[key]]);
+  return JSON.stringify(entries);
+}
+
+function serializeCustomizerValues(values: CustomizerValues): string {
+  const entries = Object.keys(values)
+    .sort()
+    .map(key => [key, values[key]]);
+  return JSON.stringify(entries);
 }

@@ -5,6 +5,7 @@ import { MultiLayoutComponentId, SingleLayoutComponentId, State, StatePersister 
 import { VALID_EXPORT_FORMATS_2D, VALID_EXPORT_FORMATS_3D } from './formats.ts';
 import { bubbleUpDeepMutations } from "./deep-mutate.ts";
 import { downloadUrl, fetchSource, formatBytes, formatMillis, readFileAsDataURL } from '../utils.ts'
+import { CustomizerValue, CustomizerValuePrimitive, CustomizerValues, ParameterSet } from './customizer-types.ts';
 
 import JSZip from 'jszip';
 import { ProcessStreams } from "../runner/openscad-runner.ts";
@@ -15,6 +16,52 @@ import { export3MF } from "../io/export_3mf.ts";
 import chroma from "chroma-js";
 
 const githubRx = /^https:\/\/github.com\/([^/]+)\/([^/]+)\/blob\/(.+)$/;
+
+function valuesEqual(a: CustomizerValuePrimitive | undefined, b: CustomizerValuePrimitive | undefined) {
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false;
+    return a.every((value, index) => value === b[index]);
+  }
+  return a === b;
+}
+
+export function buildCustomizerValues(
+  parameterSet: ParameterSet | undefined,
+  vars: State['params']['vars'] | undefined
+): CustomizerValues {
+  const values: CustomizerValues = {};
+  if (!parameterSet) {
+    return values;
+  }
+
+  for (const parameter of parameterSet.parameters ?? []) {
+    const currentValue = vars?.[parameter.name];
+    const entry: CustomizerValue = {
+      value: currentValue ?? parameter.initial,
+      type: parameter.type,
+      initial: parameter.initial,
+      group: parameter.group,
+      caption: parameter.caption,
+    };
+
+    if ('min' in parameter) {
+      entry.min = parameter.min;
+    }
+    if ('max' in parameter) {
+      entry.max = parameter.max;
+    }
+    if ('step' in parameter) {
+      entry.step = parameter.step;
+    }
+    if ('options' in parameter && parameter.options) {
+      entry.options = parameter.options;
+    }
+
+    values[parameter.name] = entry;
+  }
+
+  return values;
+}
 
 export class Model {
   constructor(private fs: FS, public state: State, private setStateCallback?: (state: State) => void, 
@@ -53,9 +100,39 @@ export class Model {
       if (exportFormat3D != null) s.params.exportFormat3D = exportFormat3D;
     });
   }
-  setVar(name: string, value: any) {
-    this.mutate(s => s.params.vars = {...s.params.vars ?? {}, [name]: value});
-    this.render({isPreview: true, now: false});
+  setVar(name: string, value: CustomizerValuePrimitive) {
+    this.setVars({[name]: value});
+  }
+
+  setVars(vars: Record<string, CustomizerValuePrimitive>) {
+    if (!vars || Object.keys(vars).length === 0) {
+      return;
+    }
+
+    const changed = this.mutate(s => {
+      const currentVars = s.params.vars ?? {};
+      let updatedVars = currentVars;
+
+      for (const [key, newValue] of Object.entries(vars)) {
+        if (valuesEqual(currentVars[key], newValue)) {
+          continue;
+        }
+
+        if (updatedVars === currentVars) {
+          updatedVars = {...currentVars};
+        }
+
+        updatedVars[key] = newValue;
+      }
+
+      if (updatedVars !== currentVars) {
+        s.params.vars = updatedVars;
+      }
+    });
+
+    if (changed) {
+      this.render({isPreview: true, now: false});
+    }
   }
 
   set logsVisible(value: boolean) {

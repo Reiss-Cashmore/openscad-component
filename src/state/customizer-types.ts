@@ -44,3 +44,21 @@ export type ParameterSet = {
   parameters: Parameter[];
   title: string;
 };
+
+export type CustomizerValuePrimitive = number | string | boolean | number[];
+
+export type CustomizerValue = {
+  value: CustomizerValuePrimitive;
+  type: Parameter['type'];
+  initial: CustomizerValuePrimitive;
+  group: string;
+  caption?: string;
+  min?: number;
+  max?: number;
+  step?: number;
+  options?: ParameterOption[];
+};
+
+export type CustomizerValues = Record<string, CustomizerValue>;
+
+export type CustomizerValuesInput = Record<string, CustomizerValuePrimitive>;
