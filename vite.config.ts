@@ -3,10 +3,12 @@ import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 import { resolve } from 'path';
 
-export default defineConfig(({ command }) => {
-  const isLibraryBuild = command === 'build';
+export default defineConfig(({ command, mode }) => {
+  const isDemoBuild = mode === 'demo';
+  const isLibraryBuild = command === 'build' && !isDemoBuild;
 
   return {
+    base: isDemoBuild ? process.env.DEMO_BASE ?? '/' : undefined,
     plugins: [
       react(),
       ...(isLibraryBuild ? [
@@ -64,7 +66,8 @@ export default defineConfig(({ command }) => {
       minify: 'esbuild',
       target: 'es2022'
     } : {
-      outDir: 'demo-dist'
+      outDir: 'demo-dist',
+      emptyOutDir: true
     },
 
     // For demo development

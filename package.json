@@ -38,9 +38,10 @@
     "README.md",
     "LICENSE"
   ],
-  "scripts": {
+    "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/post-build.js",
+    "build:demo": "vite build --mode demo",
     "build:watch": "vite build --watch",
     "build:libs": "tsx scripts/build-libs.ts",
     "preview": "vite preview",
@@ -69,7 +70,8 @@
     "monaco-editor": "^0.52.2",
     "thumbhash": "^0.1.1",
     "uuid": "^11.0.3",
-    "uzip": "^0.20201231.0"
+    "uzip": "^0.20201231.0",
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@types/chroma-js": "^2.4.5",
