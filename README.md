@@ -180,6 +180,18 @@ type Parameter = {
 };
 ```
 
+#### Example `onParametersChange` Payload
+
+```json
+[
+  { "name": "width", "type": "number", "initial": 20, "group": "Dimensions", "min": 1, "max": 100 },
+  { "name": "height", "type": "number", "initial": 10, "group": "Dimensions" },
+  { "name": "rounded", "type": "boolean", "initial": true, "group": "Options" },
+  { "name": "style", "type": "string", "initial": "modern", "group": "Options",
+    "options": [{ "name": "Modern", "value": "modern" }, { "name": "Classic", "value": "classic" }] }
+]
+```
+
 #### Example
 
 ```tsx
