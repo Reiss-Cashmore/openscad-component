@@ -80,6 +80,9 @@ function MyCADApp() {
 | `statePersister` | `StatePersister` | - | Custom state persistence |
 | `className` | `string` | - | CSS class for container |
 | `style` | `React.CSSProperties` | - | Inline styles for container |
+| `customizerValues` | `CustomizerValuesInput` | - | Override customizer parameter values |
+| `onCustomizerValuesChange` | `(values: CustomizerValues) => void` | - | Callback when values change |
+| `onParametersChange` | `(parameters: Parameter[]) => void` | - | Callback when parameter schema changes |
 
 ### Required Assets
 
@@ -139,6 +142,144 @@ npm run dev  # Opens on port 3001
 ```
 
 ## Advanced Usage
+
+### Custom Customizer Panel
+
+Build your own customizer UI by using the `customizerValues`, `onCustomizerValuesChange`, and `onParametersChange` props. This allows you to create a completely custom parameter interface while the playground handles rendering.
+
+#### Types
+
+```typescript
+// Simple input format for setting values
+type CustomizerValuesInput = Record<string, number | string | boolean | number[]>;
+
+// Rich output format with full metadata
+type CustomizerValues = Record<string, {
+  value: number | string | boolean | number[];
+  type: 'number' | 'string' | 'boolean';
+  initial: number | string | boolean | number[];
+  group: string;      // From OpenSCAD /* [Group Name] */ syntax
+  caption?: string;
+  min?: number;
+  max?: number;
+  step?: number;
+  options?: { name: string; value: number | string }[];
+}>;
+
+// Parameter schema from OpenSCAD file
+type Parameter = {
+  name: string;
+  type: 'number' | 'string' | 'boolean';
+  initial: number | string | boolean | number[];
+  group: string;
+  caption?: string;
+  min?: number;
+  max?: number;
+  step?: number;
+  options?: { name: string; value: number | string }[];
+};
+```
+
+#### Example
+
+```tsx
+import { OpenSCADPlayground } from 'openscad-playground';
+import type { CustomizerValues, CustomizerValuesInput, Parameter } from 'openscad-playground';
+import { useState, useCallback } from 'react';
+
+function CustomCustomizerApp() {
+  // Parameter schema from the OpenSCAD file
+  const [parameters, setParameters] = useState<Parameter[]>([]);
+  // Current values with full metadata
+  const [values, setValues] = useState<CustomizerValues>({});
+  // Your overrides to send back to the playground
+  const [overrides, setOverrides] = useState<CustomizerValuesInput>({});
+
+  const handleChange = useCallback((name: string, value: number | string | boolean) => {
+    setOverrides(prev => ({ ...prev, [name]: value }));
+  }, []);
+
+  // Group parameters by their /* [Group] */ annotations
+  const grouped = parameters.reduce((acc, param) => {
+    (acc[param.group] ??= []).push(param);
+    return acc;
+  }, {} as Record<string, Parameter[]>);
+
+  return (
+    <div style={{ display: 'flex', height: '100vh' }}>
+      {/* Your custom UI */}
+      <aside style={{ width: 300, padding: 16, overflow: 'auto' }}>
+        {Object.entries(grouped).map(([group, params]) => (
+          <section key={group}>
+            <h3>{group}</h3>
+            {params.map(param => (
+              <div key={param.name}>
+                <label>{param.caption || param.name}</label>
+                {param.type === 'boolean' ? (
+                  <input
+                    type="checkbox"
+                    checked={Boolean(overrides[param.name] ?? values[param.name]?.value ?? param.initial)}
+                    onChange={e => handleChange(param.name, e.target.checked)}
+                  />
+                ) : param.type === 'number' ? (
+                  <input
+                    type="number"
+                    value={Number(overrides[param.name] ?? values[param.name]?.value ?? param.initial)}
+                    min={param.min}
+                    max={param.max}
+                    step={param.step}
+                    onChange={e => handleChange(param.name, Number(e.target.value))}
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={String(overrides[param.name] ?? values[param.name]?.value ?? param.initial)}
+                    onChange={e => handleChange(param.name, e.target.value)}
+                  />
+                )}
+              </div>
+            ))}
+          </section>
+        ))}
+      </aside>
+
+      {/* Playground with bindings */}
+      <div style={{ flex: 1 }}>
+        <OpenSCADPlayground
+          initialFiles={{
+            'main.scad': `
+              /* [Dimensions] */
+              width = 20;
+              height = 10;
+              
+              /* [Options] */
+              rounded = true;
+              
+              cube([width, width, height], center=true);
+            `
+          }}
+          customizerValues={overrides}
+          onCustomizerValuesChange={setValues}
+          onParametersChange={setParameters}
+          initialState={{
+            view: {
+              layout: { mode: 'multi', editor: true, viewer: true, customizer: false }
+            }
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+#### How It Works
+
+1. **`onParametersChange`** fires when the OpenSCAD file is parsed, providing the parameter schema with types, groups, and constraints
+2. **`onCustomizerValuesChange`** fires whenever values change, providing the current state with full metadata
+3. **`customizerValues`** accepts simple key-value pairs to override parameter values - changes trigger instant re-renders
+
+The OpenSCAD `/* [Group Name] */` syntax is used to organize parameters into groups in your custom UI.
 
 ### Custom State Management
 
