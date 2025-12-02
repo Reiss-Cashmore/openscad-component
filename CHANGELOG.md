@@ -1,3 +1,13 @@
+## [2.3.0](https://github.com/Reiss-Cashmore/openscad-component/compare/v2.2.0...v2.3.0) (2025-12-02)
+
+### Features
+
+* **docs:** linting ([e988a9c](https://github.com/Reiss-Cashmore/openscad-component/commit/e988a9c0f2167184b664586522beb53c06e8f03c))
+
+
+### All Commits
+- feat(docs): linting (e988a9c)
+
 ## [2.2.0](https://github.com/Reiss-Cashmore/openscad-component/compare/v2.1.0...v2.2.0) (2025-12-02)
 
 ### Features
