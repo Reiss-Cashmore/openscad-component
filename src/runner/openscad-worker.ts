@@ -17,8 +17,14 @@ export type MergedOutputs = {stdout?: string, stderr?: string, error?: string}[]
 let browserFSLoaded = false;
 async function ensureBrowserFS() {
   if (browserFSLoaded) return;
-  const workerBase = typeof self !== 'undefined' && self.location ? self.location.href : '';
-  const browserFSUrl = new URL('browserfs.min.js', workerBase).toString();
+  let workerBaseHref = '';
+  if (typeof self !== 'undefined' && self.location) {
+    const workerUrl = new URL(self.location.href);
+    let basePath = workerUrl.pathname.replace(/\/[^/]*$/, '/');
+    basePath = basePath.replace(/\/assets\/$/, '/');
+    workerBaseHref = `${workerUrl.origin}${basePath}`;
+  }
+  const browserFSUrl = new URL('browserfs.min.js', workerBaseHref || '/').toString();
   const browserFSCode = await fetch(browserFSUrl).then(r => r.text());
   (0, eval)(browserFSCode);
   browserFSLoaded = true;
