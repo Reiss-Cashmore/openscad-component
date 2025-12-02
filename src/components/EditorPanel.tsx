@@ -3,7 +3,7 @@
 import React, { CSSProperties, useContext, useRef, useState } from 'react';
 import Editor, { loader, Monaco } from '@monaco-editor/react';
 import openscadEditorOptions from '../language/openscad-editor-options.ts';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from 'monaco-editor';
 import { TextField, IconButton, Box, Menu, MenuItem } from '@mui/material';
 import { 
   MoreHoriz as MoreIcon, 
