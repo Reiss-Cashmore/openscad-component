@@ -2,11 +2,11 @@ import { e as fo, s as co, h as lo, f as vo } from "./filesystem-683jcLN5.js";
 var ho = (() => {
   var K = import.meta.url;
   return (function(rr = {}) {
-    var c = typeof rr < "u" ? rr : {}, dr, ar;
+    var c = typeof rr < "u" ? rr : {}, er, sr;
     c.ready = new Promise(function(r, e) {
-      dr = r, ar = e;
+      er = r, sr = e;
     });
-    var $ = Object.assign({}, c), j = [], sr = "./this.program", G = (r, e) => {
+    var $ = Object.assign({}, c), j = [], ur = "./this.program", G = (r, e) => {
       throw e;
     }, br = typeof window == "object", X = typeof importScripts == "function", Z = typeof process == "object" && typeof process.versions == "object" && typeof process.versions.node == "string", H = "";
     function F(r) {
@@ -30,7 +30,7 @@ var ho = (() => {
       }, n.onerror = t, n.send(null);
     });
     var Dr = c.print || console.log.bind(console), Q = c.printErr || console.warn.bind(console);
-    Object.assign(c, $), $ = null, c.arguments && (j = c.arguments), c.thisProgram && (sr = c.thisProgram), c.quit && (G = c.quit);
+    Object.assign(c, $), $ = null, c.arguments && (j = c.arguments), c.thisProgram && (ur = c.thisProgram), c.quit && (G = c.quit);
     var vr;
     c.wasmBinary && (vr = c.wasmBinary);
     var qe = c.noExitRuntime || !1;
@@ -40,7 +40,7 @@ var ho = (() => {
       r || Y(e);
     }
     var $r = typeof TextDecoder < "u" ? new TextDecoder("utf8") : void 0;
-    function ur(r, e, t) {
+    function fr(r, e, t) {
       e >>>= 0;
       for (var n = e + t, i = e; r[i] && !(i >= n); ) ++i;
       if (i - e > 16 && r.buffer && $r)
@@ -66,8 +66,8 @@ var ho = (() => {
       }
       return a;
     }
-    function er(r, e) {
-      return r >>>= 0, r ? ur(J, r, e) : "";
+    function tr(r, e) {
+      return r >>>= 0, r ? fr(J, r, e) : "";
     }
     function _r(r, e, t, n) {
       if (t >>>= 0, !(n > 0)) return 0;
@@ -96,7 +96,7 @@ var ho = (() => {
     function Nr(r, e, t) {
       return _r(r, J, e, t);
     }
-    function fr(r) {
+    function cr(r) {
       for (var e = 0, t = 0; t < r.length; ++t) {
         var n = r.charCodeAt(t);
         n <= 127 ? e++ : n <= 2047 ? e += 2 : n >= 55296 && n <= 57343 ? (e += 4, ++t) : e += 3;
@@ -142,15 +142,15 @@ var ho = (() => {
     function it(r) {
       ee.unshift(r);
     }
-    var tr = 0, pr = null;
+    var nr = 0, pr = null;
     function mo(r) {
       return r;
     }
     function Gr(r) {
-      tr++, c.monitorRunDependencies && c.monitorRunDependencies(tr);
+      nr++, c.monitorRunDependencies && c.monitorRunDependencies(nr);
     }
     function Mr(r) {
-      if (tr--, c.monitorRunDependencies && c.monitorRunDependencies(tr), tr == 0 && pr) {
+      if (nr--, c.monitorRunDependencies && c.monitorRunDependencies(nr), nr == 0 && pr) {
         var e = pr;
         pr = null, e();
       }
@@ -158,7 +158,7 @@ var ho = (() => {
     function Y(r) {
       c.onAbort && c.onAbort(r), r = "Aborted(" + r + ")", Q(r), hr = !0, Or = 1, r += ". Build with -sASSERTIONS for more info.";
       var e = new WebAssembly.RuntimeError(r);
-      throw ar(e), e;
+      throw sr(e), e;
     }
     var ot = "data:application/octet-stream;base64,";
     function ne(r) {
@@ -196,11 +196,11 @@ var ho = (() => {
         return (!i || i.func !== n) && (i = e[t] = { func: n, wrapper: ie(n) }), i.wrapper;
       };
     }
-    var nr;
-    c.locateFile ? (nr = "openscad.wasm", ne(nr) || (nr = F(nr))) : nr = new URL("/wasm/openscad.wasm", import.meta.url).href;
+    var ir;
+    c.locateFile ? (ir = "openscad.wasm", ne(ir) || (ir = F(ir))) : ir = new URL("/wasm/openscad.wasm", import.meta.url).href;
     function oe(r) {
       try {
-        if (r == nr && vr)
+        if (r == ir && vr)
           return new Uint8Array(vr);
         if (Yr)
           return Yr(r);
@@ -251,9 +251,9 @@ var ho = (() => {
         try {
           return c.instantiateWasm(r, e);
         } catch (n) {
-          Q("Module.instantiateWasm callback failed with error: " + n), ar(n);
+          Q("Module.instantiateWasm callback failed with error: " + n), sr(n);
         }
-      return ft(vr, nr, r, t).catch(ar), {};
+      return ft(vr, ir, r, t).catch(sr), {};
     }
     var D, P;
     function se(r) {
@@ -264,7 +264,7 @@ var ho = (() => {
         r.shift()(c);
     }
     function lt(r, e, t, n) {
-      Y("Assertion failed: " + er(r) + ", at: " + [e ? er(e) : "unknown filename", t, n ? er(n) : "unknown function"]);
+      Y("Assertion failed: " + tr(r) + ", at: " + [e ? tr(e) : "unknown filename", t, n ? tr(n) : "unknown function"]);
     }
     var Fr = [];
     function k(r) {
@@ -274,19 +274,19 @@ var ho = (() => {
     function dt(r, e) {
       k(r)(e);
     }
-    var ir = [];
+    var or = [];
     function ue(r) {
       r.add_ref();
     }
     var Tr = 0;
     function vt(r) {
       var e = new Rr(r);
-      return e.get_caught() || (e.set_caught(!0), Tr--), e.set_rethrown(!1), ir.push(e), ue(e), e.get_exception_ptr();
+      return e.get_caught() || (e.set_caught(!0), Tr--), e.set_rethrown(!1), or.push(e), ue(e), e.get_exception_ptr();
     }
     function ht() {
-      if (!ir.length)
+      if (!or.length)
         return 0;
-      var r = ir[ir.length - 1];
+      var r = or[or.length - 1];
       return ue(r), r.excPtr;
     }
     function fe(r) {
@@ -337,17 +337,17 @@ var ho = (() => {
     function _t(r) {
       r && fe(new Rr(r));
     }
-    var cr = 0;
+    var lr = 0;
     function mt() {
       w(0);
-      var r = ir.pop();
-      fe(r), cr = 0;
+      var r = or.pop();
+      fe(r), lr = 0;
     }
     function pt(r) {
-      throw cr || (cr = r), r;
+      throw lr || (lr = r), r;
     }
     function Cr() {
-      var r = cr;
+      var r = lr;
       if (!r)
         return kr(0), 0;
       var e = new Rr(r);
@@ -367,14 +367,14 @@ var ho = (() => {
     }
     var wt = Cr, yt = Cr, Et = Cr, gt = Cr;
     function kt() {
-      var r = ir.pop();
+      var r = or.pop();
       r || Y("no exception to throw");
       var e = r.excPtr;
-      throw r.get_rethrown() || (ir.push(r), r.set_rethrown(!0), r.set_caught(!1), Tr++), cr = e, e;
+      throw r.get_rethrown() || (or.push(r), r.set_rethrown(!0), r.set_caught(!1), Tr++), lr = e, e;
     }
     function bt(r, e, t) {
       var n = new Rr(r);
-      throw n.init(e, t), cr = r, Tr++, r;
+      throw n.init(e, t), lr = r, Tr++, r;
     }
     function St() {
       return Tr;
@@ -441,15 +441,15 @@ var ho = (() => {
       return f = f.concat(i.slice(s)), f.join("/");
     } };
     function Pr(r, e, t) {
-      var n = fr(r) + 1, i = new Array(n), a = _r(r, i, 0, i.length);
+      var n = cr(r) + 1, i = new Array(n), a = _r(r, i, 0, i.length);
       return e && (i.length = a), i;
     }
-    var or = { ttys: [], init: function() {
+    var ar = { ttys: [], init: function() {
     }, shutdown: function() {
     }, register: function(r, e) {
-      or.ttys[r] = { input: [], output: [], ops: e }, o.registerDevice(r, or.stream_ops);
+      ar.ttys[r] = { input: [], output: [], ops: e }, o.registerDevice(r, ar.stream_ops);
     }, stream_ops: { open: function(r) {
-      var e = or.ttys[r.node.rdev];
+      var e = ar.ttys[r.node.rdev];
       if (!e)
         throw new o.ErrnoError(43);
       r.tty = e, r.seekable = !1;
@@ -494,13 +494,13 @@ var ho = (() => {
       }
       return r.input.shift();
     }, put_char: function(r, e) {
-      e === null || e === 10 ? (Dr(ur(r.output, 0)), r.output = []) : e != 0 && r.output.push(e);
+      e === null || e === 10 ? (Dr(fr(r.output, 0)), r.output = []) : e != 0 && r.output.push(e);
     }, fsync: function(r) {
-      r.output && r.output.length > 0 && (Dr(ur(r.output, 0)), r.output = []);
+      r.output && r.output.length > 0 && (Dr(fr(r.output, 0)), r.output = []);
     } }, default_tty1_ops: { put_char: function(r, e) {
-      e === null || e === 10 ? (Q(ur(r.output, 0)), r.output = []) : e != 0 && r.output.push(e);
+      e === null || e === 10 ? (Q(fr(r.output, 0)), r.output = []) : e != 0 && r.output.push(e);
     }, fsync: function(r) {
-      r.output && r.output.length > 0 && (Q(ur(r.output, 0)), r.output = []);
+      r.output && r.output.length > 0 && (Q(fr(r.output, 0)), r.output = []);
     } } };
     function Xr(r, e) {
       return J.fill(0, r, r + e), r;
@@ -1112,12 +1112,12 @@ var ho = (() => {
       if (e.flags = e.flags || 0, e.encoding = e.encoding || "binary", e.encoding !== "utf8" && e.encoding !== "binary")
         throw new Error('Invalid encoding type "' + e.encoding + '"');
       var t, n = o.open(r, e.flags), i = o.stat(r), a = i.size, s = new Uint8Array(a);
-      return o.read(n, s, 0, a, 0), e.encoding === "utf8" ? t = ur(s, 0) : e.encoding === "binary" && (t = s), o.close(n), t;
+      return o.read(n, s, 0, a, 0), e.encoding === "utf8" ? t = fr(s, 0) : e.encoding === "binary" && (t = s), o.close(n), t;
     }, writeFile: (r, e, t = {}) => {
       t.flags = t.flags || 577;
       var n = o.open(r, t.flags, t.mode);
       if (typeof e == "string") {
-        var i = new Uint8Array(fr(e) + 1), a = _r(e, i, 0, i.length);
+        var i = new Uint8Array(cr(e) + 1), a = _r(e, i, 0, i.length);
         o.write(n, i, 0, a, void 0, t.canOwn);
       } else if (ArrayBuffer.isView(e))
         o.write(n, e, 0, e.byteLength, void 0, t.canOwn);
@@ -1137,7 +1137,7 @@ var ho = (() => {
     }, createDefaultDirectories: () => {
       o.mkdir("/tmp"), o.mkdir("/home"), o.mkdir("/home/web_user");
     }, createDefaultDevices: () => {
-      o.mkdir("/dev"), o.registerDevice(o.makedev(1, 3), { read: () => 0, write: (e, t, n, i, a) => i }), o.mkdev("/dev/null", o.makedev(1, 3)), or.register(o.makedev(5, 0), or.default_tty_ops), or.register(o.makedev(6, 0), or.default_tty1_ops), o.mkdev("/dev/tty", o.makedev(5, 0)), o.mkdev("/dev/tty1", o.makedev(6, 0));
+      o.mkdir("/dev"), o.registerDevice(o.makedev(1, 3), { read: () => 0, write: (e, t, n, i, a) => i }), o.mkdev("/dev/null", o.makedev(1, 3)), ar.register(o.makedev(5, 0), ar.default_tty_ops), ar.register(o.makedev(6, 0), ar.default_tty1_ops), o.mkdev("/dev/tty", o.makedev(5, 0)), o.mkdev("/dev/tty1", o.makedev(6, 0));
       var r = Dt();
       o.createDevice("/dev", "random", r), o.createDevice("/dev", "urandom", r), o.mkdir("/dev/shm"), o.mkdir("/dev/shm/tmp");
     }, createSpecialDirectories: () => {
@@ -1443,7 +1443,7 @@ var ho = (() => {
       var r = v[S.varargs - 4 >>> 2];
       return r;
     }, getStr: function(r) {
-      var e = er(r);
+      var e = tr(r);
       return e;
     }, getStreamFromFD: function(r) {
       var e = o.getStream(r);
@@ -1892,7 +1892,7 @@ var ho = (() => {
     function Bt(r, e) {
       try {
         if (e === 0) return -28;
-        var t = o.cwd(), n = fr(t) + 1;
+        var t = o.cwd(), n = cr(t) + 1;
         return e < n ? -68 : (Nr(t, r, e), n);
       } catch (i) {
         if (typeof o > "u" || i.name !== "ErrnoError") throw i;
@@ -2021,7 +2021,7 @@ var ho = (() => {
     function Vt(r, e, t, n) {
       try {
         if (e = S.getStr(e), e = S.calculateAt(r, e), n <= 0) return -28;
-        var i = o.readlink(e), a = Math.min(n, fr(i)), s = L[t + a >>> 0];
+        var i = o.readlink(e), a = Math.min(n, cr(i)), s = L[t + a >>> 0];
         return Nr(i, t, n + 1), L[t + a >>> 0] = s, a;
       } catch (u) {
         if (typeof o > "u" || u.name !== "ErrnoError") throw u;
@@ -2181,7 +2181,7 @@ var ho = (() => {
     var pn = me, pe;
     pe = () => performance.now();
     function we(r) {
-      var e = fr(r) + 1, t = lr(e);
+      var e = cr(r) + 1, t = dr(e);
       return t && _r(r, L, t, e), t;
     }
     function wn(r, e, t) {
@@ -2234,7 +2234,7 @@ var ho = (() => {
     }
     var jr = {};
     function Dn() {
-      return sr || "./this.program";
+      return ur || "./this.program";
     }
     function gr() {
       if (!gr.strings) {
@@ -2339,17 +2339,17 @@ var ho = (() => {
       }
     }
     function jn(r) {
-      var e = lr(20), t = lr(r.length + 1);
+      var e = dr(20), t = dr(r.length + 1);
       Nr(r, t, r.length + 1), O[e >>> 2] = t;
-      var n = lr(4);
+      var n = dr(4);
       O[n >>> 2] = 0, O[e + 4 >>> 2] = n;
       var i = 2;
       v[e + 8 >>> 2] = i, v[e + 12 >>> 2] = 4;
-      var a = lr(12);
+      var a = dr(12);
       return O[a >>> 2] = a + 8, O[a + 4 >>> 2] = 0, v[a + 8 >>> 2] = qr(W.lookup_name(r)), O[e + 16 >>> 2] = a, e;
     }
     function In(r) {
-      return jn(er(r));
+      return jn(tr(r));
     }
     function Bn(r) {
       return r;
@@ -2374,7 +2374,7 @@ var ho = (() => {
       L.set(r, e >>> 0);
     }
     function Yn(r, e, t, n) {
-      var i = v[n + 40 >>> 2], a = { tm_sec: v[n >>> 2], tm_min: v[n + 4 >>> 2], tm_hour: v[n + 8 >>> 2], tm_mday: v[n + 12 >>> 2], tm_mon: v[n + 16 >>> 2], tm_year: v[n + 20 >>> 2], tm_wday: v[n + 24 >>> 2], tm_yday: v[n + 28 >>> 2], tm_isdst: v[n + 32 >>> 2], tm_gmtoff: v[n + 36 >>> 2], tm_zone: i ? er(i) : "" }, s = er(t), u = { "%c": "%a %b %d %H:%M:%S %Y", "%D": "%m/%d/%y", "%F": "%Y-%m-%d", "%h": "%b", "%r": "%I:%M:%S %p", "%R": "%H:%M", "%T": "%H:%M:%S", "%x": "%m/%d/%y", "%X": "%H:%M:%S", "%Ec": "%c", "%EC": "%C", "%Ex": "%m/%d/%y", "%EX": "%H:%M:%S", "%Ey": "%y", "%EY": "%Y", "%Od": "%d", "%Oe": "%e", "%OH": "%H", "%OI": "%I", "%Om": "%m", "%OM": "%M", "%OS": "%S", "%Ou": "%u", "%OU": "%U", "%OV": "%V", "%Ow": "%w", "%OW": "%W", "%Oy": "%y" };
+      var i = v[n + 40 >>> 2], a = { tm_sec: v[n >>> 2], tm_min: v[n + 4 >>> 2], tm_hour: v[n + 8 >>> 2], tm_mday: v[n + 12 >>> 2], tm_mon: v[n + 16 >>> 2], tm_year: v[n + 20 >>> 2], tm_wday: v[n + 24 >>> 2], tm_yday: v[n + 28 >>> 2], tm_isdst: v[n + 32 >>> 2], tm_gmtoff: v[n + 36 >>> 2], tm_zone: i ? tr(i) : "" }, s = tr(t), u = { "%c": "%a %b %d %H:%M:%S %Y", "%D": "%m/%d/%y", "%F": "%Y-%m-%d", "%h": "%b", "%r": "%I:%M:%S %p", "%R": "%H:%M", "%T": "%H:%M:%S", "%x": "%m/%d/%y", "%X": "%H:%M:%S", "%Ec": "%c", "%EC": "%C", "%Ex": "%m/%d/%y", "%EX": "%H:%M:%S", "%Ey": "%y", "%EY": "%Y", "%Od": "%d", "%Oe": "%e", "%OH": "%H", "%OI": "%I", "%Om": "%m", "%OM": "%M", "%OS": "%S", "%Ou": "%u", "%OU": "%U", "%OV": "%V", "%Ow": "%w", "%OW": "%W", "%Oy": "%y" };
       for (var f in u)
         s = s.replace(new RegExp(f, "g"), u[f]);
       var l = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], d = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -2503,7 +2503,7 @@ var ho = (() => {
       return r ? (le(52), -1) : 0;
     }
     function Xn(r) {
-      var e = fr(r) + 1, t = Kr(e);
+      var e = cr(r) + 1, t = Kr(e);
       return _r(r, L, t, e), t;
     }
     var ke = {}, be = function(r, e, t, n) {
@@ -2530,8 +2530,8 @@ var ho = (() => {
       return (De = c._main = c.asm.Eb).apply(null, arguments);
     }, Ae = function() {
       return (Ae = c.asm.Fb).apply(null, arguments);
-    }, lr = function() {
-      return (lr = c.asm.Gb).apply(null, arguments);
+    }, dr = function() {
+      return (dr = c.asm.Gb).apply(null, arguments);
     }, kr = function() {
       return (kr = c.asm.Hb).apply(null, arguments);
     }, Oe = c._fflush = function() {
@@ -3207,7 +3207,7 @@ var ho = (() => {
     };
     function Ye(r = []) {
       var e = De;
-      r.unshift(sr);
+      r.unshift(ur);
       var t = r.length, n = Kr((t + 1) * 4), i = n >> 2;
       r.forEach((s) => {
         v[i++ >>> 0] = Xn(s);
@@ -3223,10 +3223,10 @@ var ho = (() => {
       }
     }
     function We(r = j) {
-      if (tr > 0 || (Ze(), tr > 0))
+      if (nr > 0 || (Ze(), nr > 0))
         return;
       function e() {
-        Hr || (Hr = !0, c.calledRun = !0, !hr && (Qe(), Je(), dr(c), c.onRuntimeInitialized && c.onRuntimeInitialized(), Ge && Ye(r), et()));
+        Hr || (Hr = !0, c.calledRun = !0, !hr && (Qe(), Je(), er(c), c.onRuntimeInitialized && c.onRuntimeInitialized(), Ge && Ye(r), et()));
       }
       c.setStatus ? (c.setStatus("Running..."), setTimeout(function() {
         setTimeout(function() {
@@ -3244,8 +3244,8 @@ var ho = (() => {
 let Xe = !1;
 async function _o() {
   if (Xe) return;
-  const K = await fetch("/browserfs.min.js").then((rr) => rr.text());
-  (0, eval)(K), Xe = !0;
+  const K = typeof self < "u" && self.location ? self.location.href : "", rr = new URL("browserfs.min.js", K).toString(), c = await fetch(rr).then((er) => er.text());
+  (0, eval)(c), Xe = !0;
 }
 function zr(K) {
   self.postMessage(K);
@@ -3255,11 +3255,11 @@ self.addEventListener("message", async (K) => {
   const {
     mountArchives: rr,
     inputs: c,
-    args: dr,
-    outputPaths: ar
+    args: er,
+    outputPaths: sr
   } = K.data, $ = [];
   let j;
-  const sr = performance.now();
+  const ur = performance.now();
   try {
     if (j = await ho({
       noInitialRun: !0,
@@ -3288,15 +3288,15 @@ self.addEventListener("message", async (K) => {
         } catch (U) {
           throw console.trace(U), new Error(`Error while trying to write ${F.path}: ${U}`);
         }
-    console.log("Invoking OpenSCAD with: ", dr);
+    console.log("Invoking OpenSCAD with: ", er);
     let G;
     try {
-      G = j.callMain(dr);
+      G = j.callMain(er);
     } catch (F) {
       throw typeof F == "number" && j.formatException && (F = j.formatException(F)), new Error(`OpenSCAD invocation failed: ${F}`);
     }
-    const X = performance.now() - sr, Z = [];
-    for (const F of ar ?? [])
+    const X = performance.now() - ur, Z = [];
+    for (const F of sr ?? [])
       try {
         const U = j.FS.readFile(F);
         Z.push([F, U]);
@@ -3311,7 +3311,7 @@ self.addEventListener("message", async (K) => {
     };
     console.debug(H), zr({ result: H });
   } catch (G) {
-    const X = performance.now() - sr;
+    const X = performance.now() - ur;
     console.trace(G);
     const Z = `${G}`;
     $.push({ error: Z }), zr({
