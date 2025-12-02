@@ -38,7 +38,6 @@ export default function CustomizerPanel({className, style}: {className?: string,
     acc[param.group].push(param);
     return acc;
   }, {} as { [key: string]: any[] });
-
   const groups = Object.entries(groupedParameters);
   const collapsedTabSet = new Set(state.view.collapsedCustomizerTabs ?? []);
   const setTabOpen = (name: string, open: boolean) => {
