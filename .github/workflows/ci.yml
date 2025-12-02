@@ -34,5 +34,3 @@ jobs:
       - name: Build library
         run: npm run build
 
-      - name: Build demo app
-        run: npm run build:demo
